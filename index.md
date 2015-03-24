@@ -2,25 +2,24 @@
 layout: page
 title: Version Control with Git
 ---
-Wolfman and Dracula have been hired by Universal Missions
-(a space services spinoff from Euphoric State University)
-to investigate if it is possible to send their next planetary lander to Mars.
-They want to be able to work on the plans at the same time,
-but they have run into problems doing this in the past.
-If they take turns,
-each one will spend a lot of time waiting for the other to finish,
-but if they work on their own copies and email changes back and forth
-things will be lost, overwritten, or duplicated.
 
-A colleague suggests using [version control](reference.html#version-control) to manage their work.
-Version control is better than mailing files back and forth because:
+You are very likely familiar with the notion of "version control". 
+Microsoft and Apple consistently roll out new versions of their operating systems. Chances are you know exactly what version of operating system you have on your computer.
+Textbook publishers routinely publish new editions of books, and clearly identify it as a new version with an edition number. 
+Federal, state and local governments in the United States pass and amend laws, which have legislative histories appended to them to indicate when and how they have changed. 
+All of these are basic examples of [version control](reference.html#version-control). 
 
-*   Nothing that is committed to version control is ever lost.
+But version control isn't just for large companies and governments. And it doesn't just mean saving different versions of work, which you probably already do.
+It's a workflow that helps you manage and track the evolution of your intellectual work and allows you to collaborate with others without emailing files back and forth. 
+
+With version control...
+
+*   Nothing that is committed is ever lost.
     This means it can be used like the "undo" feature in an editor,
     and since all old versions of files are saved
     it's always possible to go back in time to see exactly who wrote what on a particular day,
     or what version of a program was used to generate a particular set of results.
-*   It keeps a record of who made what changes when,
+*   You have a record of who made what changes when,
     so that if people have questions later on,
     they know who to ask.
 *   It's hard (but not impossible) to accidentally overlook or overwrite someone's changes:
@@ -33,10 +32,7 @@ and to collaborate with other people.
 Every large software development project relies on it,
 and most programmers use it for their small jobs as well.
 And it isn't just for software:
-books (like this one),
-papers,
-small data sets,
-and anything that changes over time or needs to be shared
+books, papers, small data sets, and anything that changes over time or needs to be shared
 can and should be stored in a version control system.
 
 > ## Prerequisites {.prereq}
