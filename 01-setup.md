@@ -20,15 +20,15 @@ version control is much better for this than this:
 
 The first time we use Git on a new machine,
 we need to configure a few things.
-Here's how Dracula sets up his new laptop:
+Here's how Thomas Jefferson would set up his new laptop:
 
 ~~~ {.bash}
-$ git config --global user.name "Vlad Dracula"
-$ git config --global user.email "vlad@tran.sylvan.ia"
+$ git config --global user.name "Tom Jefferson"
+$ git config --global user.email "tj7z@virginia.edu"
 $ git config --global color.ui "auto"
 ~~~
 
-(Please use your own name and email address instead of Dracula's.)
+(Please use your own name and email address instead of Tom's.)
 
 He also has to set his favorite text editor, following this table:
 

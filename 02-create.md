@@ -10,11 +10,11 @@ minutes: 10
 
 Once Git is configured,
 we can start using it.
-Let's create a directory for our work:
+Let's create a directory for our work. In this lesson we'll write a program to calculate BMI, so let's call it "bmi":
 
 ~~~ {.bash}
-$ mkdir planets
-$ cd planets
+$ mkdir bmi
+$ cd bmi
 ~~~
 
 and tell Git to make it a [repository](reference.html#repository)&mdash;a place where

@@ -9,36 +9,54 @@ minutes: 20
 > *   Go through the modify-add-commit cycle for single and multiple files.
 > *   Explain where information is stored at each stage.
 
-Let's create a file called `mars.txt` that contains some notes
-about the Red Planet's suitability as a base.
+Let's create a python script called `bmi.py` that calculates a persons BMI ([Body Mass Index](http://www.nhlbi.nih.gov/health/educational/lose_wt/BMI/bmicalc.htm)) given his or her weight in pounds and height in inches.
 (We'll use `nano` to edit the file;
 you can use whatever editor you like.
 In particular, this does not have to be the core.editor you set globally earlier.)
 
 ~~~ {.bash}
-$ nano mars.txt
+$ nano bmi.py
 ~~~
 
-Type the text below into the `mars.txt` file:
+Type the code below into the `bmi.py` file:
 
-~~~ {.output}
-Cold and dry, but everything is my favorite color
+~~~ {.python}
+w = raw_input("enter weight: ")
+h = raw_input("enter height: ")
+bmi = (float(w) / float(h)**2) * 703
+print bmi 
 ~~~
 
-`mars.txt` now contains a single line:
+`bmi.py` now contains four lines:
 
 ~~~ {.bash}
 $ ls
 ~~~
 ~~~ {.output}
-mars.txt
+bmi.py
 ~~~
 ~~~ {.bash}
-$ cat mars.txt
+$ cat bmi.py
 ~~~
 ~~~ {.output}
-Cold and dry, but everything is my favorite color
+w = raw_input("enter weight: ")
+h = raw_input("enter height: ")
+bmi = (float(w) / float(h)**2) * 703
+print bmi 
 ~~~
+
+Let's test our program:
+
+~~~ {.bash}
+$ python bmi.py
+~~~
+~~~ {.output}
+enter weight in lbs.: 215
+enter height in inches: 69
+31.7464818315
+~~~
+
+It appears to be working (*as long as we enter numbers*).
 
 If we check the status of our project again,
 Git tells us that it's noticed the new file:
@@ -54,7 +72,7 @@ $ git status
 # Untracked files:
 #   (use "git add <file>..." to include in what will be committed)
 #
-#	mars.txt
+#	bmi.py
 nothing added to commit but untracked files present (use "git add" to track)
 ~~~
 
@@ -63,7 +81,7 @@ that Git isn't keeping track of.
 We can tell Git to track a file using `git add`:
 
 ~~~ {.bash}
-$ git add mars.txt
+$ git add bmi.py
 ~~~
 
 and then check that the right thing happened:
@@ -79,22 +97,22 @@ $ git status
 # Changes to be committed:
 #   (use "git rm --cached <file>..." to unstage)
 #
-#	new file:   mars.txt
+#	new file:   bmi.py
 #
 ~~~
 
-Git now knows that it's supposed to keep track of `mars.txt`,
+Git now knows that it's supposed to keep track of `bmi.py`,
 but it hasn't recorded these changes as a commit yet.
 To get it to do that,
 we need to run one more command:
 
 ~~~ {.bash}
-$ git commit -m "Start notes on Mars as a base"
+$ git commit -m "first version of bmi program"
 ~~~
 ~~~ {.output}
-[master (root-commit) f22b25e] Start notes on Mars as a base
- 1 file changed, 1 insertion(+)
- create mode 100644 mars.txt
+[master (root-commit) f22b25e] first version of bmi program
+ 1 file changed, 4 insertions(+)
+ create mode 100644 bmi.py
 ~~~
 
 When we run `git commit`,
@@ -129,10 +147,10 @@ $ git log
 ~~~
 ~~~ {.output}
 commit f22b25e3233b4645dabd0d81e651fe074bd8e73b
-Author: Vlad Dracula <vlad@tran.sylvan.ia>
-Date:   Thu Aug 22 09:51:46 2013 -0400
+Author: Tom Jefferson <tj7z@virginia.edu>
+Date:   Thu Aug 22 09:51:46 2014 -0400
 
-    Start notes on Mars as a base
+    first version of bmi program
 ~~~
 
 `git log` lists all revisions  made to a repository in reverse chronological order.
@@ -146,23 +164,25 @@ and the log message Git was given when the revision was created.
 
 > ## Where Are My Changes? {.callout}
 >
-> If we run `ls` at this point, we will still see just one file called `mars.txt`.
+> If we run `ls` at this point, we will still see just one file called `bmi.py`.
 > That's because Git saves information about files' history
 > in the special `.git` directory mentioned earlier
 > so that our filesystem doesn't become cluttered
 > (and so that we can't accidentally edit or delete an old version).
 
-Now suppose Dracula adds more information to the file.
+Now suppose Tom updates the program to indicate that weight must be entered in pounds and height in inches.
 (Again, we'll edit with `nano` and then `cat` the file to show its contents;
 you may use a different editor, and don't need to `cat`.)
 
 ~~~ {.bash}
-$ nano mars.txt
-$ cat mars.txt
+$ nano bmi.py
+$ cat bmi.py
 ~~~
 ~~~ {.output}
-Cold and dry, but everything is my favorite color
-The two moons may be a problem for Wolfman
+w = raw_input("enter weight in lbs.: ")
+h = raw_input("enter height in inches: ")
+bmi = (float(w) / float(h)**2) * 703
+print bmi
 ~~~
 
 When we run `git status` now,
@@ -177,7 +197,7 @@ $ git status
 #   (use "git add <file>..." to update what will be committed)
 #   (use "git checkout -- <file>..." to discard changes in working directory)
 #
-#	modified:   mars.txt
+#	modified:   bmi.py
 #
 no changes added to commit (use "git add" and/or "git commit -a")
 ~~~
@@ -197,13 +217,17 @@ of the file and the most recently saved version:
 $ git diff
 ~~~
 ~~~ {.output}
-diff --git a/mars.txt b/mars.txt
-index df0654a..315bf3a 100644
---- a/mars.txt
-+++ b/mars.txt
-@@ -1 +1,2 @@
- Cold and dry, but everything is my favorite color
-+The two moons may be a problem for Wolfman
+diff --git a/bmi.py b/bmi.py
+index 5009833..6fcaa25 100644
+--- a/bmi.py
++++ b/bmi.py
+@@ -1,4 +1,4 @@
+-w = raw_input("enter weight: ")
+-h = raw_input("enter height: ")
++w = raw_input("enter weight in lbs.: ")
++h = raw_input("enter height in inches: ")
+ bmi =(float(w)/float(h)**2)*703
+ print bmi
 ~~~
 
 The output is cryptic because
@@ -215,7 +239,7 @@ If we break it down into pieces:
     comparing the old and new versions of the file.
 2.  The second line tells exactly which revisions of the file
     Git is comparing;
-    `df0654a` and `315bf3a` are unique computer-generated labels for those revisions.
+    `5009833` and `6fcaa25` are unique computer-generated labels for those revisions.
 3.  The third and fourth lines once again show the name of the file being changed.
 4.  The remaining lines are the most interesting, they show us the actual differences
     and the lines on which they occur.
@@ -225,7 +249,7 @@ If we break it down into pieces:
 After reviewing our change, it's time to commit it:
 
 ~~~ {.bash}
-$ git commit -m "Add concerns about effects of Mars' moons on Wolfman"
+$ git commit -m "Add weight and height units"
 ~~~
 ~~~ {.output}
 # On branch master
@@ -233,7 +257,7 @@ $ git commit -m "Add concerns about effects of Mars' moons on Wolfman"
 #   (use "git add <file>..." to update what will be committed)
 #   (use "git checkout -- <file>..." to discard changes in working directory)
 #
-#	modified:   mars.txt
+#	modified:   bmi.py
 #
 no changes added to commit (use "git add" and/or "git commit -a")
 ~~~
@@ -243,12 +267,12 @@ Git won't commit because we didn't use `git add` first.
 Let's fix that:
 
 ~~~ {.bash}
-$ git add mars.txt
-$ git commit -m "Add concerns about effects of Mars' moons on Wolfman"
+$ git add bmi.py
+$ git commit -m "Add weight and height units"
 ~~~
 ~~~ {.output}
-[master 34961b1] Add concerns about effects of Mars' moons on Wolfman
- 1 file changed, 1 insertion(+)
+[master 34961b1] Add weight and height units
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 ~~~
 
 Git insists that we add files to the set we want to commit
@@ -276,39 +300,41 @@ Let's watch as our changes to a file move from our editor
 to the staging area
 and into long-term storage.
 First,
-we'll add another line to the file:
+we'll update our program to round the BMI to one decimal place:
 
 ~~~ {.bash}
-$ nano mars.txt
-$ cat mars.txt
+$ nano bmi.py
+$ cat bmi.py
 ~~~
 ~~~ {.output}
-Cold and dry, but everything is my favorite color
-The two moons may be a problem for Wolfman
-But the Mummy will appreciate the lack of humidity
+w = raw_input("enter weight in lbs.: ")
+h = raw_input("enter height in inches: ")
+bmi = (float(w) / float(h)**2) * 703
+print round(bmi,1)
 ~~~
 ~~~ {.bash}
 $ git diff
 ~~~
 ~~~ {.output}
-diff --git a/mars.txt b/mars.txt
-index 315bf3a..b36abfd 100644
---- a/mars.txt
-+++ b/mars.txt
-@@ -1,2 +1,3 @@
- Cold and dry, but everything is my favorite color
- The two moons may be a problem for Wolfman
-+But the Mummy will appreciate the lack of humidity
+diff --git a/bmi.py b/bmi.py
+index 6fcaa25..c480208 100644
+--- a/bmi.py
++++ b/bmi.py
+@@ -1,4 +1,4 @@
+ w = raw_input("enter weight in lbs.: ")
+ h = raw_input("enter height in inches: ")
+ bmi =(float(w)/float(h)**2)*703
+-print bmi
++print round(bmi,1)
 ~~~
 
 So far, so good:
-we've added one line to the end of the file
-(shown with a `+` in the first column).
+we've changed the last line the program.
 Now let's put that change in the staging area
 and see what `git diff` reports:
 
 ~~~ {.bash}
-$ git add mars.txt
+$ git add bmi.py
 $ git diff
 ~~~
 
@@ -323,14 +349,16 @@ if we do this:
 $ git diff --staged
 ~~~
 ~~~ {.output}
-diff --git a/mars.txt b/mars.txt
-index 315bf3a..b36abfd 100644
---- a/mars.txt
-+++ b/mars.txt
-@@ -1,2 +1,3 @@
- Cold and dry, but everything is my favorite color
- The two moons may be a problem for Wolfman
-+But the Mummy will appreciate the lack of humidity
+diff --git a/bmi.py b/bmi.py
+index 6fcaa25..c480208 100644
+--- a/bmi.py
++++ b/bmi.py
+@@ -1,4 +1,4 @@
+ w = raw_input("enter weight in lbs.: ")
+ h = raw_input("enter height in inches: ")
+ bmi =(float(w)/float(h)**2)*703
+-print bmi
++print round(bmi,1)
 ~~~
 
 it shows us the difference between
@@ -339,11 +367,11 @@ and what's in the staging area.
 Let's save our changes:
 
 ~~~ {.bash}
-$ git commit -m "Discuss concerns about Mars' climate for Mummy"
+$ git commit -m "round bmi to one decimal place"
 ~~~
 ~~~ {.output}
-[master 005937f] Discuss concerns about Mars' climate for Mummy
- 1 file changed, 1 insertion(+)
+[master 005937f] round bmi to one decimal place
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 ~~~
 
 check our status:
@@ -363,22 +391,22 @@ $ git log
 ~~~
 ~~~ {.output}
 commit 005937fbe2a98fb83f0ade869025dc2636b4dad5
-Author: Vlad Dracula <vlad@tran.sylvan.ia>
-Date:   Thu Aug 22 10:14:07 2013 -0400
+Author: Tom Jefferson <tj7x@virginia.edu>
+Date:   Thu Aug 22 10:14:07 2014 -0400
 
-    Discuss concerns about Mars' climate for Mummy
+    round bmi to one decimal place
 
 commit 34961b159c27df3b475cfe4415d94a6d1fcd064d
-Author: Vlad Dracula <vlad@tran.sylvan.ia>
-Date:   Thu Aug 22 10:07:21 2013 -0400
+Author: Tom Jefferson <tj7x@virginia.edu>
+Date:   Thu Aug 22 10:07:21 2014 -0400
 
-    Add concerns about effects of Mars' moons on Wolfman
+    add weight and height units
 
 commit f22b25e3233b4645dabd0d81e651fe074bd8e73b
-Author: Vlad Dracula <vlad@tran.sylvan.ia>
-Date:   Thu Aug 22 09:51:46 2013 -0400
+Author: Tom Jefferson <tj7x@virginia.edu>
+Date:   Thu Aug 22 09:51:46 2014 -0400
 
-    Start notes on Mars as a base
+    first version of bmi program
 ~~~
 
 To recap, when we want to add changes to our repository,
