@@ -115,11 +115,11 @@ can we restore older versions of things?
 Let's suppose we accidentally overwrite our file:
 
 ~~~ {.bash}
-$ nano mars.txt
-$ cat mars.txt
+$ nano bmi.py
+$ cat bmi.py
 ~~~
 ~~~ {.output}
-We will need to manufacture our own oxygen
+print "hello world"
 ~~~
 
 `git status` now tells us that the file has been changed,
@@ -134,7 +134,7 @@ $ git status
 #   (use "git add <file>..." to update what will be committed)
 #   (use "git checkout -- <file>..." to discard changes in working directory)
 #
-#	modified:   mars.txt
+#	modified:   bmi.py
 #
 no changes added to commit (use "git add" and/or "git commit -a")
 ~~~
@@ -143,13 +143,14 @@ We can put things back the way they were
 by using `git checkout`:
 
 ~~~ {.bash}
-$ git checkout HEAD mars.txt
-$ cat mars.txt
+$ git checkout HEAD bmi.py
+$ cat bmi.py
 ~~~
 ~~~ {.output}
-Cold and dry, but everything is my favorite color
-The two moons may be a problem for Wolfman
-But the Mummy will appreciate the lack of humidity
+w = raw_input("enter weight in lbs.: ")
+h = raw_input("enter height in inches: ")
+bmi =(float(w)/float(h)**2)*703
+print round(bmi,1)
 ~~~
 
 As you might guess from its name,
@@ -161,7 +162,7 @@ If we want to go back even further,
 we can use a revision identifier instead:
 
 ~~~ {.bash}
-$ git checkout f22b25e mars.txt
+$ git checkout d8f089 mars.txt
 ~~~
 
 It's important to remember that

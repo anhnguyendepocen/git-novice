@@ -89,9 +89,9 @@ index 5009833..c480208 100644
 -print bmi
 +print round(bmi,1)</code></pre>
 <p>All right: we can save changes to files and see what we've changed---how can we restore older versions of things? Let's suppose we accidentally overwrite our file:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">nano</span> mars.txt
-$ <span class="kw">cat</span> mars.txt</code></pre>
-<pre class="output"><code>We will need to manufacture our own oxygen</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">nano</span> bmi.py
+$ <span class="kw">cat</span> bmi.py</code></pre>
+<pre class="output"><code>print &quot;hello world&quot;</code></pre>
 <p><code>git status</code> now tells us that the file has been changed, but those changes haven't been staged:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> status</code></pre>
 <pre class="output"><code># On branch master
@@ -99,17 +99,18 @@ $ <span class="kw">cat</span> mars.txt</code></pre>
 #   (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
 #   (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)
 #
-#   modified:   mars.txt
+#   modified:   bmi.py
 #
 no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)</code></pre>
 <p>We can put things back the way they were by using <code>git checkout</code>:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> checkout HEAD mars.txt
-$ <span class="kw">cat</span> mars.txt</code></pre>
-<pre class="output"><code>Cold and dry, but everything is my favorite color
-The two moons may be a problem for Wolfman
-But the Mummy will appreciate the lack of humidity</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> checkout HEAD bmi.py
+$ <span class="kw">cat</span> bmi.py</code></pre>
+<pre class="output"><code>w = raw_input(&quot;enter weight in lbs.: &quot;)
+h = raw_input(&quot;enter height in inches: &quot;)
+bmi =(float(w)/float(h)**2)*703
+print round(bmi,1)</code></pre>
 <p>As you might guess from its name, <code>git checkout</code> checks out (i.e., restores) an old version of a file. In this case, we're telling Git that we want to recover the version of the file recorded in <code>HEAD</code>, which is the last saved revision. If we want to go back even further, we can use a revision identifier instead:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> checkout f22b25e mars.txt</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> checkout d8f089 mars.txt</code></pre>
 <p>It's important to remember that we must use the revision number that identifies the state of the repository <em>before</em> the change we're trying to undo. A common mistake is to use the revision number of the commit in which we made the change we're trying to get rid of. In the example below, we want retrieve the state from before the most recent commit (<code>HEAD~1</code>), which is revision <code>f22b25e</code>:</p>
 <div class="figure">
 <img src="fig/git-checkout.svg" alt="Git Checkout" />
