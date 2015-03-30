@@ -35,45 +35,59 @@
 </ul>
 </div>
 <p>If we want to see what we changed when, we use <code>git diff</code> again, but refer to old versions using the notation <code>HEAD~1</code>, <code>HEAD~2</code>, and so on:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> diff HEAD~1 mars.txt</code></pre>
-<pre class="output"><code>diff --git a/mars.txt b/mars.txt
-index 315bf3a..b36abfd 100644
---- a/mars.txt
-+++ b/mars.txt
-@@ -1,2 +1,3 @@
- Cold and dry, but everything is my favorite color
- The two moons may be a problem for Wolfman
-+But the Mummy will appreciate the lack of humidity</code></pre>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> diff HEAD~2 mars.txt</code></pre>
-<pre class="output"><code>diff --git a/mars.txt b/mars.txt
-index df0654a..b36abfd 100644
---- a/mars.txt
-+++ b/mars.txt
-@@ -1 +1,3 @@
- Cold and dry, but everything is my favorite color
-+The two moons may be a problem for Wolfman
-+But the Mummy will appreciate the lack of humidity</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> diff HEAD~1 bmi.py</code></pre>
+<pre class="output"><code>diff --git a/bmi.py b/bmi.py
+index 6fcaa25..c480208 100644
+--- a/bmi.py
++++ b/bmi.py
+@@ -1,4 +1,4 @@
+ w = raw_input(&quot;enter weight in lbs.: &quot;)
+ h = raw_input(&quot;enter height in inches: &quot;)
+ bmi =(float(w)/float(h)**2)*703
+-print bmi
++print round(bmi,1)</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> diff HEAD~2 bmi.py</code></pre>
+<pre class="output"><code>diff --git a/bmi.py b/bmi.py
+index 5009833..c480208 100644
+--- a/bmi.py
++++ b/bmi.py
+@@ -1,4 +1,4 @@
+-w = raw_input(&quot;enter weight: &quot;)
+-h = raw_input(&quot;enter height: &quot;)
++w = raw_input(&quot;enter weight in lbs.: &quot;)
++h = raw_input(&quot;enter height in inches: &quot;)
+ bmi =(float(w)/float(h)**2)*703
+-print bmi
++print round(bmi,1)</code></pre>
 <p>In this way, we build up a chain of revisions. The most recent end of the chain is referred to as <code>HEAD</code>; we can refer to previous revisions using the <code>~</code> notation, so <code>HEAD~1</code> (pronounced &quot;head minus one&quot;) means &quot;the previous revision&quot;, while <code>HEAD~123</code> goes back 123 revisions from where we are now.</p>
-<p>We can also refer to revisions using those long strings of digits and letters that <code>git log</code> displays. These are unique IDs for the changes, and &quot;unique&quot; really does mean unique: every change to any set of files on any machine has a unique 40-character identifier. Our first commit was given the ID f22b25e3233b4645dabd0d81e651fe074bd8e73b, so let's try this:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> diff f22b25e3233b4645dabd0d81e651fe074bd8e73b mars.txt</code></pre>
-<pre class="output"><code>diff --git a/mars.txt b/mars.txt
-index df0654a..b36abfd 100644
---- a/mars.txt
-+++ b/mars.txt
-@@ -1 +1,3 @@
- Cold and dry, but everything is my favorite color
-+The two moons may be a problem for Wolfman
-+But the Mummy will appreciate the lack of humidity</code></pre>
+<p>We can also refer to revisions using those long strings of digits and letters that <code>git log</code> displays. These are unique IDs for the changes, and &quot;unique&quot; really does mean unique: every change to any set of files on any machine has a unique 40-character identifier. Our first commit was given the ID d8f0892f62d80b2f2aa88dc0ad62e6989a60d282, so let's try this:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> diff d8f0892f62d80b2f2aa88dc0ad62e6989a60d282 bmi.py</code></pre>
+<pre class="output"><code>diff --git a/bmi.py b/bmi.py
+index 5009833..c480208 100644
+--- a/bmi.py
++++ b/bmi.py
+@@ -1,4 +1,4 @@
+-w = raw_input(&quot;enter weight: &quot;)
+-h = raw_input(&quot;enter height: &quot;)
++w = raw_input(&quot;enter weight in lbs.: &quot;)
++h = raw_input(&quot;enter height in inches: &quot;)
+ bmi =(float(w)/float(h)**2)*703
+-print bmi
++print round(bmi,1)</code></pre>
 <p>That's the right answer, but typing random 40-character strings is annoying, so Git lets us use just the first few:</p>
-<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> diff f22b25e mars.txt</code></pre>
-<pre class="output"><code>diff --git a/mars.txt b/mars.txt
-index df0654a..b36abfd 100644
---- a/mars.txt
-+++ b/mars.txt
-@@ -1 +1,3 @@
- Cold and dry, but everything is my favorite color
-+The two moons may be a problem for Wolfman
-+But the Mummy will appreciate the lack of humidity</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> diff d8f089 bmi.py</code></pre>
+<pre class="output"><code>diff --git a/bmi.py b/bmi.py
+index 5009833..c480208 100644
+--- a/bmi.py
++++ b/bmi.py
+@@ -1,4 +1,4 @@
+-w = raw_input(&quot;enter weight: &quot;)
+-h = raw_input(&quot;enter height: &quot;)
++w = raw_input(&quot;enter weight in lbs.: &quot;)
++h = raw_input(&quot;enter height in inches: &quot;)
+ bmi =(float(w)/float(h)**2)*703
+-print bmi
++print round(bmi,1)</code></pre>
 <p>All right: we can save changes to files and see what we've changed---how can we restore older versions of things? Let's suppose we accidentally overwrite our file:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">nano</span> mars.txt
 $ <span class="kw">cat</span> mars.txt</code></pre>
@@ -118,10 +132,10 @@ But the Mummy will appreciate the lack of humidity</code></pre>
 <p>Jennifer has made changes to the Python script that she has been working on for weeks, and the modifications she made this morning &quot;broke&quot; the script and it no longer runs. She has spent ~ 1hr trying to fix it, with no luck...</p>
 <p>Luckily, she has been keeping track of her revisions using Git! Which commands below will let her recover the last committed version of her Python script called <code>data_cruncher.py</code>?</p>
 <ol style="list-style-type: decimal">
-<li><code>git checkout HEAD</code></li>
-<li><code>git checkout HEAD data_cruncher.py</code></li>
-<li><code>git checkout HEAD~1 data_cruncher.py</code></li>
-<li><code>git checkout &lt;unique ID of last revision&gt; data_cruncher.py</code></li>
+<li><pre><code>$ git checkout HEAD</code></pre></li>
+<li><pre><code>$ git checkout HEAD data_cruncher.py</code></pre></li>
+<li><pre><code>$ git checkout HEAD~1 data_cruncher.py</code></pre></li>
+<li><pre><code>$ git checkout &lt;unique ID of last revision&gt; data_cruncher.py</code></pre></li>
 <li>Both 2 &amp; 4</li>
 </ol>
 </div>

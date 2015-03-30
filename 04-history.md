@@ -17,30 +17,36 @@ but refer to old versions
 using the notation `HEAD~1`, `HEAD~2`, and so on:
 
 ~~~ {.bash}
-$ git diff HEAD~1 mars.txt
+$ git diff HEAD~1 bmi.py
 ~~~
 ~~~ {.output}
-diff --git a/mars.txt b/mars.txt
-index 315bf3a..b36abfd 100644
---- a/mars.txt
-+++ b/mars.txt
-@@ -1,2 +1,3 @@
- Cold and dry, but everything is my favorite color
- The two moons may be a problem for Wolfman
-+But the Mummy will appreciate the lack of humidity
+diff --git a/bmi.py b/bmi.py
+index 6fcaa25..c480208 100644
+--- a/bmi.py
++++ b/bmi.py
+@@ -1,4 +1,4 @@
+ w = raw_input("enter weight in lbs.: ")
+ h = raw_input("enter height in inches: ")
+ bmi =(float(w)/float(h)**2)*703
+-print bmi
++print round(bmi,1)
 ~~~
 ~~~ {.bash}
-$ git diff HEAD~2 mars.txt
+$ git diff HEAD~2 bmi.py
 ~~~
 ~~~ {.output}
-diff --git a/mars.txt b/mars.txt
-index df0654a..b36abfd 100644
---- a/mars.txt
-+++ b/mars.txt
-@@ -1 +1,3 @@
- Cold and dry, but everything is my favorite color
-+The two moons may be a problem for Wolfman
-+But the Mummy will appreciate the lack of humidity
+diff --git a/bmi.py b/bmi.py
+index 5009833..c480208 100644
+--- a/bmi.py
++++ b/bmi.py
+@@ -1,4 +1,4 @@
+-w = raw_input("enter weight: ")
+-h = raw_input("enter height: ")
++w = raw_input("enter weight in lbs.: ")
++h = raw_input("enter height in inches: ")
+ bmi =(float(w)/float(h)**2)*703
+-print bmi
++print round(bmi,1)
 ~~~
 
 In this way,
@@ -59,21 +65,25 @@ and "unique" really does mean unique:
 every change to any set of files on any machine
 has a unique 40-character identifier.
 Our first commit was given the ID
-f22b25e3233b4645dabd0d81e651fe074bd8e73b,
+d8f0892f62d80b2f2aa88dc0ad62e6989a60d282,
 so let's try this:
 
 ~~~ {.bash}
-$ git diff f22b25e3233b4645dabd0d81e651fe074bd8e73b mars.txt
+$ git diff d8f0892f62d80b2f2aa88dc0ad62e6989a60d282 bmi.py
 ~~~
 ~~~ {.output}
-diff --git a/mars.txt b/mars.txt
-index df0654a..b36abfd 100644
---- a/mars.txt
-+++ b/mars.txt
-@@ -1 +1,3 @@
- Cold and dry, but everything is my favorite color
-+The two moons may be a problem for Wolfman
-+But the Mummy will appreciate the lack of humidity
+diff --git a/bmi.py b/bmi.py
+index 5009833..c480208 100644
+--- a/bmi.py
++++ b/bmi.py
+@@ -1,4 +1,4 @@
+-w = raw_input("enter weight: ")
+-h = raw_input("enter height: ")
++w = raw_input("enter weight in lbs.: ")
++h = raw_input("enter height in inches: ")
+ bmi =(float(w)/float(h)**2)*703
+-print bmi
++print round(bmi,1)
 ~~~
 
 That's the right answer,
@@ -81,17 +91,21 @@ but typing random 40-character strings is annoying,
 so Git lets us use just the first few:
 
 ~~~ {.bash}
-$ git diff f22b25e mars.txt
+$ git diff d8f089 bmi.py
 ~~~
 ~~~ {.output}
-diff --git a/mars.txt b/mars.txt
-index df0654a..b36abfd 100644
---- a/mars.txt
-+++ b/mars.txt
-@@ -1 +1,3 @@
- Cold and dry, but everything is my favorite color
-+The two moons may be a problem for Wolfman
-+But the Mummy will appreciate the lack of humidity
+diff --git a/bmi.py b/bmi.py
+index 5009833..c480208 100644
+--- a/bmi.py
++++ b/bmi.py
+@@ -1,4 +1,4 @@
+-w = raw_input("enter weight: ")
+-h = raw_input("enter height: ")
++w = raw_input("enter weight in lbs.: ")
++h = raw_input("enter height in inches: ")
+ bmi =(float(w)/float(h)**2)*703
+-print bmi
++print round(bmi,1)
 ~~~
 
 
