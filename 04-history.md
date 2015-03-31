@@ -162,7 +162,7 @@ If we want to go back even further,
 we can use a revision identifier instead:
 
 ~~~ {.bash}
-$ git checkout d8f089 mars.txt
+$ git checkout d8f089 bmi.py
 ~~~
 
 It's important to remember that
