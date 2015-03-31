@@ -26,31 +26,25 @@ we'll explore the pros and cons of this in the final section of this lesson.
 
 Let's start by sharing the changes we've made to our current project with the world.
 Log in to GitHub,
-then click on the icon in the top right corner to create a new repository called `planets`:
+then click on the icon in the top right corner to create a new repository called `bmi`.
 
-![Creating a Repository on GitHub (Step 1)](fig/github-create-repo-01.png)
 
-Name your repository "planets" and then click "Create Repository":
-
-![Creating a Repository on GitHub (Step 2)](fig/github-create-repo-02.png)
+Name your repository "bmi" and then click "Create Repository".
 
 As soon as the repository is created,
-GitHub displays a page with a URL and some information on how to configure your local repository:
+GitHub displays a page with a URL and some information on how to configure your local repository.
 
-![Creating a Repository on GitHub (Step 3)](fig/github-create-repo-03.png)
 
 This effectively does the following on GitHub's servers:
 
 ~~~ {.bash}
-$ mkdir planets
-$ cd planets
+$ mkdir bmi
+$ cd bmi
 $ git init
 ~~~
 
-Our local repository still contains our earlier work on `mars.txt`,
-but the remote repository on GitHub doesn't contain any files yet:
-
-![Freshly-Made GitHub Repository](fig/git-freshly-made-github-repo.svg)
+Our local repository still contains our earlier work on `bmi.py`,
+but the remote repository on GitHub doesn't contain any files yet.
 
 The next step is to connect the two repositories.
 We do this by making the GitHub repository a [remote](reference.html#remote)
@@ -75,15 +69,15 @@ Click on the 'HTTPS' link to change the [protocol](reference.html#protocol) from
 ![Changing the Repository URL on GitHub](fig/github-change-repo-string.png)
 
 Copy that URL from the browser,
-go into the local `planets` repository,
+go into the local `bmi` repository,
 and run this command:
 
 ~~~ {.bash}
-$ git remote add origin https://github.com/vlad/planets
+$ git remote add origin https://github.com/tomjeff/bmi
 ~~~
 
-Make sure to use the URL for your repository rather than Vlad's:
-the only difference should be your username instead of `vlad`.
+Make sure to use the URL for your repository rather than Tom's:
+the only difference should be your username instead of `tomjeff`.
 
 We can check that the command has worked by running `git remote -v`:
 
@@ -91,8 +85,8 @@ We can check that the command has worked by running `git remote -v`:
 $ git remote -v
 ~~~
 ~~~ {.output}
-origin   https://github.com/vlad/planets.git (push)
-origin   https://github.com/vlad/planets.git (fetch)
+origin   https://github.com/tomjeff/bmi.git (push)
+origin   https://github.com/tomjeff/bmi.git (fetch)
 ~~~
 
 The name `origin` is a local nickname for your remote repository:
@@ -112,7 +106,7 @@ Delta compression using up to 4 threads.
 Compressing objects: 100% (6/6), done.
 Writing objects: 100% (9/9), 821 bytes, done.
 Total 9 (delta 2), reused 0 (delta 0)
-To https://github.com/vlad/planets
+To https://github.com/tomjeff/bmi
  * [new branch]      master -> master
 Branch master set up to track remote branch master from origin.
 ~~~
@@ -150,9 +144,6 @@ Branch master set up to track remote branch master from origin.
 > You may want to add this command at the end of your `~/.bashrc` to make it the
 > default behavior.
 
-Our local and remote repositories are now in this state:
-
-![GitHub Repository After First Push](fig/github-repo-after-first-push.svg)
 
 > ## The '-u' Flag {.callout}
 >
@@ -166,7 +157,7 @@ We can pull changes from the remote repository to the local one as well:
 $ git pull origin master
 ~~~
 ~~~ {.output}
-From https://github.com/vlad/planets
+From https://github.com/tomjeff/bmi
  * branch            master     -> FETCH_HEAD
 Already up-to-date.
 ~~~
@@ -194,36 +185,36 @@ then select Collaborators, and enter your partner's username.
 ![Adding collaborators on GitHub](fig/github-add-collaborators.png)
 
 The other partner should `cd` to another directory
-(so `ls` doesn't show a `planets` folder),
+(so `ls` doesn't show a `bmi` folder),
 and then make a copy of this repository on your own computer:
 
 ~~~ {.bash}
-$ git clone https://github.com/vlad/planets.git
+$ git clone https://github.com/tomjeff/bmi.git
 ~~~
 
-Replace 'vlad' with your partner's username (the one who owns the repository).
+Replace 'tomjeff' with your partner's username (the one who owns the repository).
 
 `git clone` creates a fresh local copy of a remote repository.
 
 ![After Creating Clone of Repository](fig/github-collaboration.svg)
 
-The new collaborator can now make a change in their copy of the repository:
+The new collaborator can now make a change in their copy of the repository. For example, let's say she begins creating some documentation called help.txt:
 
 ~~~ {.bash}
-$ cd planets
-$ nano pluto.txt
-$ cat pluto.txt
+$ cd bmi
+$ nano help.txt
+$ cat help.txt
 ~~~
 ~~~ {.output}
-It is so a planet!
+BMI is calculated as (weight / height^2) * 703. 
 ~~~
 ~~~ {.bash}
-$ git add pluto.txt
-$ git commit -m "Some notes about Pluto"
+$ git add help.txt
+$ git commit -m "first version of help file"
 ~~~
 ~~~ {.output}
  1 file changed, 1 insertion(+)
- create mode 100644 pluto.txt
+ create mode 100644 help.txt
 ~~~
 
 then push the change to GitHub:
@@ -237,7 +228,7 @@ Delta compression using up to 4 threads.
 Compressing objects: 100% (2/2), done.
 Writing objects: 100% (3/3), 306 bytes, done.
 Total 3 (delta 0), reused 0 (delta 0)
-To https://github.com/vlad/planets.git
+To https://github.com/tomjeff/bmi.git
    9272da5..29aba7c  master -> master
 ~~~
 
@@ -258,13 +249,13 @@ remote: Counting objects: 4, done.
 remote: Compressing objects: 100% (2/2), done.
 remote: Total 3 (delta 0), reused 3 (delta 0)
 Unpacking objects: 100% (3/3), done.
-From https://github.com/vlad/planets
+From https://github.com/tomjeff/bmi
  * branch            master     -> FETCH_HEAD
 Updating 9272da5..29aba7c
 Fast-forward
- pluto.txt | 1 +
+ help.txt | 1 +
  1 file changed, 1 insertion(+)
- create mode 100644 pluto.txt
+ create mode 100644 help.txt
 ~~~
 
 > ## GitHub Timestamp {.challenge}

@@ -19,36 +19,37 @@ by giving us tools to [resolve](reference.html#resolve) overlapping changes.
 
 To see how we can resolve conflicts,
 we must first create one.
-The file `mars.txt` currently looks like this
-in both partners' copies of our `planets` repository:
+The file `bmi.py` currently looks like this
+in both partners' copies of our `bmi` repository:
 
 ~~~ {.bash}
-$ cat mars.txt
+$ cat bmi.py
 ~~~
 ~~~ {.output}
-Cold and dry, but everything is my favorite color
-The two moons may be a problem for Wolfman
-But the Mummy will appreciate the lack of humidity
+w = raw_input("enter weight in lbs.: ")
+h = raw_input("enter height in inches: ")
+bmi =(float(w)/float(h)**2)*703
+print round(bmi,1)
 ~~~
 
-Let's add a line to one partner's copy only:
+Let's change a line in one partner's copy only:
 
 ~~~ {.bash}
-$ nano mars.txt
-$ cat mars.txt
+$ nano bmi.py
+$ cat bmi.py
 ~~~
 ~~~ {.output}
-Cold and dry, but everything is my favorite color
-The two moons may be a problem for Wolfman
-But the Mummy will appreciate the lack of humidity
-This line added to Wolfman's copy
+w = raw_input("enter weight in lbs.: ")
+h = raw_input("enter height in inches: ")
+bmi =(float(w)/float(h)**2)*703
+print 'Your BMI is %s' % (round(bmi,1))
 ~~~
 
 and then push the change to GitHub:
 
 ~~~ {.bash}
-$ git add mars.txt
-$ git commit -m "Adding a line in our home copy"
+$ git add bmi.py
+$ git commit -m "update output language"
 ~~~
 ~~~ {.output}
 [master 5ae9631] Adding a line in our home copy
@@ -63,30 +64,30 @@ Delta compression using up to 4 threads.
 Compressing objects: 100% (3/3), done.
 Writing objects: 100% (3/3), 352 bytes, done.
 Total 3 (delta 1), reused 0 (delta 0)
-To https://github.com/vlad/planets
+To https://github.com/tomjeff/bmi
    29aba7c..dabb4c8  master -> master
 ~~~
 
 Now let's have the other partner
-make a different change to their copy
+make a slightly different change to their copy
 *without* updating from GitHub:
 
 ~~~ {.bash}
-$ nano mars.txt
-$ cat mars.txt
+$ nano bmi.py
+$ cat bmi.py
 ~~~
 ~~~ {.output}
-Cold and dry, but everything is my favorite color
-The two moons may be a problem for Wolfman
-But the Mummy will appreciate the lack of humidity
-We added a different line in the other copy
+w = raw_input("enter weight in lbs.: ")
+h = raw_input("enter height in inches: ")
+bmi =(float(w)/float(h)**2)*703
+print 'BMI: %s' % (round(bmi,1))
 ~~~
 
 We can commit the change locally:
 
 ~~~ {.bash}
-$ git add mars.txt
-$ git commit -m "Adding a line in my copy"
+$ git add bmi.py
+$ git commit -m "add BMI label"
 ~~~
 ~~~ {.output}
 [master 07ebc69] Adding a line in my copy
@@ -99,16 +100,15 @@ but Git won't let us push it to GitHub:
 $ git push origin master
 ~~~
 ~~~ {.output}
-To https://github.com/vlad/planets.git
+To https://github.com/tomjeff/bmi.git
  ! [rejected]        master -> master (non-fast-forward)
-error: failed to push some refs to 'https://github.com/vlad/planets.git'
-hint: Updates were rejected because the tip of your current branch is behind
-hint: its remote counterpart. Merge the remote changes (e.g. 'git pull')
-hint: before pushing again.
+error: failed to push some refs to 'https://github.com/tomjeff/bmi.git'
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., 'git pull ...') before pushing again.
 hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 ~~~
-
-![The conflicting changes](fig/conflict.svg)
 
 Git detects that the changes made in one copy overlap with those made in the other
 and stops us from trampling on our previous work.
@@ -121,14 +121,15 @@ Let's start by pulling:
 $ git pull origin master
 ~~~
 ~~~ {.output}
-remote: Counting objects: 5, done.        
-remote: Compressing objects: 100% (2/2), done.        
-remote: Total 3 (delta 1), reused 3 (delta 1)        
+remote: Counting objects: 3, done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 3 (delta 1), reused 3 (delta 1), pack-reused 0
 Unpacking objects: 100% (3/3), done.
-From https://github.com/vlad/planets
+From https://github.com/tomjeff/bmi
  * branch            master     -> FETCH_HEAD
-Auto-merging mars.txt
-CONFLICT (content): Merge conflict in mars.txt
+   fd79f68..620cc4f  master     -> origin/master
+Auto-merging bmi.py
+CONFLICT (content): Merge conflict in bmi.py
 Automatic merge failed; fix conflicts and then commit the result.
 ~~~
 
@@ -136,17 +137,17 @@ Automatic merge failed; fix conflicts and then commit the result.
 and marks that conflict in the affected file:
 
 ~~~ {.bash}
-$ cat mars.txt
+$ cat bmi.py
 ~~~
 ~~~ {.output}
-Cold and dry, but everything is my favorite color
-The two moons may be a problem for Wolfman
-But the Mummy will appreciate the lack of humidity
+w = raw_input("enter weight in lbs.: ")
+h = raw_input("enter height in inches: ")
+bmi =(float(w)/float(h)**2)*703
 <<<<<<< HEAD
-We added a different line in the other copy
+print 'BMI: %s' % (round(bmi,1))
 =======
-This line added to Wolfman's copy
->>>>>>> dabb4c8c450e8475aee9b14b4383acc99f42af1d
+print 'Your BMI is %s' % (round(bmi,1))
+>>>>>>> 620cc4fb444be59733bbea0a28451d5877ed053d
 ~~~
 
 Our change---the one in `HEAD`---is preceded by `<<<<<<<`.
@@ -163,21 +164,22 @@ or get rid of the change entirely.
 Let's replace both so that the file looks like this:
 
 ~~~ {.bash}
-$ cat mars.txt
+$ nano bmi.py
+$ cat bmi.py
 ~~~
 ~~~ {.output}
-Cold and dry, but everything is my favorite color
-The two moons may be a problem for Wolfman
-But the Mummy will appreciate the lack of humidity
-We removed the conflict on this line
+w = raw_input("enter weight in lbs.: ")
+h = raw_input("enter height in inches: ")
+bmi =(float(w)/float(h)**2)*703
+print 'Body Mass Index (BMI): %s' % (round(bmi,1))
 ~~~
 
 To finish merging,
-we add `mars.txt` to the changes being made by the merge
+we add `bmi.py` to the changes being made by the merge
 and then commit:
 
 ~~~ {.bash}
-$ git add mars.txt
+$ git add bmi.py
 $ git status
 ~~~
 ~~~ {.output}
@@ -187,7 +189,7 @@ $ git status
 #
 # Changes to be committed:
 #
-#	modified:   mars.txt
+#	modified:   bmi.py
 #
 ~~~
 ~~~ {.bash}
@@ -208,7 +210,7 @@ Delta compression using up to 4 threads.
 Compressing objects: 100% (6/6), done.
 Writing objects: 100% (6/6), 697 bytes, done.
 Total 6 (delta 2), reused 0 (delta 0)
-To https://github.com/vlad/planets.git
+To https://github.com/tomjeff/bmi.git
    dabb4c8..2abf2b1  master -> master
 ~~~
 
@@ -224,24 +226,24 @@ remote: Counting objects: 10, done.
 remote: Compressing objects: 100% (4/4), done.        
 remote: Total 6 (delta 2), reused 6 (delta 2)        
 Unpacking objects: 100% (6/6), done.
-From https://github.com/vlad/planets
+From https://github.com/tomjeff/bmi
  * branch            master     -> FETCH_HEAD
 Updating dabb4c8..2abf2b1
 Fast-forward
- mars.txt | 2 +-
+ bmi.py | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 ~~~
 
 we get the merged file:
 
 ~~~ {.bash}
-$ cat mars.txt 
+$ cat bmi.py
 ~~~
 ~~~ {.output}
-Cold and dry, but everything is my favorite color
-The two moons may be a problem for Wolfman
-But the Mummy will appreciate the lack of humidity
-We removed the conflict on this line
+w = raw_input("enter weight in lbs.: ")
+h = raw_input("enter height in inches: ")
+bmi =(float(w)/float(h)**2)*703
+print 'Body Mass Index (BMI): %s' % (round(bmi,1))
 ~~~
 
 We don't need to merge again because Git knows someone has already done that.
