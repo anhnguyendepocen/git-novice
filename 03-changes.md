@@ -9,7 +9,7 @@ minutes: 20
 > *   Go through the modify-add-commit cycle for single and multiple files.
 > *   Explain where information is stored at each stage.
 
-Let's create a python script called `bmi.py` that calculates a persons BMI ([Body Mass Index](http://www.nhlbi.nih.gov/health/educational/lose_wt/BMI/bmicalc.htm)) given his or her weight in pounds and height in inches.
+Let's create a Python script called `bmi.py` that calculates a persons BMI ([Body Mass Index](http://www.nhlbi.nih.gov/health/educational/lose_wt/BMI/bmicalc.htm)) given his or her weight in pounds and height in inches. BMI is a measure of body fat based on height and weight that applies to adult men and women. 
 (We'll use `nano` to edit the file;
 you can use whatever editor you like.
 In particular, this does not have to be the core.editor you set globally earlier.)
