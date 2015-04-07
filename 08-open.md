@@ -284,3 +284,6 @@ If you encounter such restrictions, it can be productive to inquire about the un
 > Can you do this unilaterally,
 > or do you need permission from someone in your institution?
 > If so, who?
+
+[Home](index.html)
+[Previous](07-conflict.html)

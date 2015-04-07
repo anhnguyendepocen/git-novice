@@ -451,3 +451,7 @@ repository (`git commit`):
 > commit your changes,
 > then modify one line and add a fourth and display the differences
 > between its updated state and its original state.
+
+[Home](index.html)
+[Previous](02-create.html)
+[Next](04-history.html)

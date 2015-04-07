@@ -120,3 +120,7 @@ $ git status --ignored
 
 nothing to commit, working directory clean
 ~~~
+
+[Home](index.html)
+[Previous](04-history.html)
+[Next](06-collab.html)

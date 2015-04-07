@@ -10,7 +10,7 @@ minutes: 10
 
 Once Git is configured,
 we can start using it.
-Let's create a directory for our work. In this lesson we'll write a program to calculate BMI, so let's call it "bmi":
+Let's create a directory for our work. In this lesson we'll write a program to calculate BMI (Body Mass Index), so let's call it "bmi":
 
 ~~~ {.bash}
 $ mkdir bmi
@@ -74,3 +74,7 @@ nothing to commit (create/copy files and use "git add" to track)
 > ~~~
 > 
 > Why is it a bad idea to do this?
+
+[Home](index.html)
+[Previous](01-setup.html)
+[Next](03-changes.html)

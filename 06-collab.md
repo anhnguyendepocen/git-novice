@@ -266,3 +266,8 @@ Fast-forward
 > push those changes to GitHub,
 > and then look at the [timestamp](reference.html#timestamp) of the change on GitHub.
 > How does GitHub record times, and why?
+
+
+[Home](index.html)
+[Previous](05-ignore.html)
+[Next](07-conflict.html)

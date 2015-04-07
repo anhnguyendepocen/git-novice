@@ -237,3 +237,8 @@ moving backward and forward in time becomes much easier.
 >     $ git checkout <unique ID of last revision> data_cruncher.py
 >     ~~~
 > 5. Both 2 & 4
+
+
+[Home](index.html)
+[Previous](03-changes.html)
+[Next](05-ignore.html)
