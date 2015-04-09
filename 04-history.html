@@ -59,7 +59,7 @@ index 5009833..c480208 100644
  bmi =(float(w)/float(h)**2)*703
 -print bmi
 +print round(bmi,1)</code></pre>
-<p>In this way, we build up a chain of revisions. The most recent end of the chain is referred to as <code>HEAD</code>; we can refer to previous revisions using the <code>~</code> notation, so <code>HEAD~1</code> (pronounced &quot;head minus one&quot;) means &quot;the previous revision&quot;, while <code>HEAD~123</code> goes back 123 revisions from where we are now.</p>
+<p>In this way, we build up a chain of revisions. The most recent end of the chain is referred to as <code>HEAD</code>; we can refer to previous revisions using the <code>~</code> notation, so <code>HEAD~1</code> (pronounced &quot;head minus one&quot;) means &quot;the previous revision&quot;, while <code>HEAD~14</code> goes back 14 revisions from where we are now.</p>
 <p>We can also refer to revisions using those long strings of digits and letters that <code>git log</code> displays. These are unique IDs for the changes, and &quot;unique&quot; really does mean unique: every change to any set of files on any machine has a unique 40-character identifier. Our first commit was given the ID d8f0892f62d80b2f2aa88dc0ad62e6989a60d282, so let's try this:</p>
 <pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> diff d8f0892f62d80b2f2aa88dc0ad62e6989a60d282 bmi.py</code></pre>
 <pre class="output"><code>diff --git a/bmi.py b/bmi.py
@@ -102,7 +102,7 @@ $ <span class="kw">cat</span> bmi.py</code></pre>
 #   modified:   bmi.py
 #
 no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)</code></pre>
-<p>We can put things back the way they were by using <code>git checkout</code>:</p>
+<p>We can put things back the way they were by using <code>git checkout</code> (NOTE: do NOT forget the file name!):</p>
 <pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> checkout HEAD bmi.py
 $ <span class="kw">cat</span> bmi.py</code></pre>
 <pre class="output"><code>w = raw_input(&quot;enter weight in lbs.: &quot;)

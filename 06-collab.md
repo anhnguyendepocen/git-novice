@@ -21,8 +21,7 @@ though,
 it's easiest to use one copy as a central hub,
 and to keep it on the web rather than on someone's laptop.
 Most programmers use hosting services like [GitHub](http://github.com) or [BitBucket](http://bitbucket.org)
-to hold those master copies;
-we'll explore the pros and cons of this in the final section of this lesson.
+to hold those master copies.
 
 Let's start by sharing the changes we've made to our current project with the world.
 Log in to GitHub,
@@ -73,7 +72,7 @@ go into the local `bmi` repository,
 and run this command:
 
 ~~~ {.bash}
-$ git remote add origin https://github.com/tomjeff/bmi
+$ git remote add origin https://github.com/tomjeff/bmi.git
 ~~~
 
 Make sure to use the URL for your repository rather than Tom's:
@@ -186,7 +185,7 @@ then select Collaborators, and enter your partner's username.
 
 The other partner should `cd` to another directory
 (so `ls` doesn't show a `bmi` folder),
-and then make a copy of this repository on your own computer:
+and then make a copy of this repository on their own computer:
 
 ~~~ {.bash}
 $ git clone https://github.com/tomjeff/bmi.git

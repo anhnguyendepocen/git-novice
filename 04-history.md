@@ -55,7 +55,7 @@ The most recent end of the chain is referred to as `HEAD`;
 we can refer to previous revisions using the `~` notation,
 so `HEAD~1` (pronounced "head minus one")
 means "the previous revision",
-while `HEAD~123` goes back 123 revisions from where we are now.
+while `HEAD~14` goes back 14 revisions from where we are now.
 
 We can also refer to revisions using
 those long strings of digits and letters
@@ -140,7 +140,7 @@ no changes added to commit (use "git add" and/or "git commit -a")
 ~~~
 
 We can put things back the way they were
-by using `git checkout`:
+by using `git checkout` (NOTE: do NOT forget the file name!):
 
 ~~~ {.bash}
 $ git checkout HEAD bmi.py

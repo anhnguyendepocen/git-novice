@@ -10,7 +10,7 @@ minutes: 10
 
 Once Git is configured,
 we can start using it.
-Let's create a directory for our work. In this lesson we'll write a program to calculate BMI (Body Mass Index), so let's call it "bmi":
+Let's create a directory for our work. In this lesson we'll write a Python program to calculate BMI (Body Mass Index), so let's call it "bmi":
 
 ~~~ {.bash}
 $ mkdir bmi
@@ -59,21 +59,7 @@ $ git status
 nothing to commit (create/copy files and use "git add" to track)
 ~~~
 
-> ## Places to Create Git Repositories {.challenge}
->
-> The following sequence of commands creates one Git repository inside another:
-> 
-> ~~~ {.bash}
-> cd           # return to home directory
-> mkdir alpha  # make a new directory alpha
-> cd alpha     # go into alpha
-> git init     # make the alpha directory a Git repository
-> mkdir beta   # make a sub-directory alpha/beta
-> cd beta      # go into alpha/beta
-> git init     # make the beta sub-directory a Git repository
-> ~~~
-> 
-> Why is it a bad idea to do this?
+It should be noted that you can create a git repository in an existing directory. Simply `cd` into it and issue the `git init` command.
 
 [Home](index.html)
 [Previous](01-setup.html)
