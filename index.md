@@ -50,11 +50,9 @@ Some previous experience with the Unix shell and Python is expected, *but isn't 
 5.  [Ignoring Things](05-ignore.html)
 6.  [Collaborating](06-collab.html)
 7.  [Conflicts](07-conflict.html)
-8.  [Open Science](08-open.html)
 
 ## Other Resources
 
-*   [Motivation](motivation.html)
 *   [Reference](reference.html)
 *   [Discussion](discussion.html)
 *   [Instructor's Guide](instructors.html)
