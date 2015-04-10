@@ -165,8 +165,9 @@ Let's replace both so that the file looks like this:
 
 ~~~ {.bash}
 $ nano bmi.py
-$ cat bmi.py
 ~~~
+Note: In `nano`, Ctrl + K can be used to quickly `delete` a line in file, which can be useful for deleting lines such as `<<<<<<< HEAD`.
+
 ~~~ {.output}
 w = raw_input("enter weight in lbs.: ")
 h = raw_input("enter height in inches: ")

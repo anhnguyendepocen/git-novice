@@ -3,7 +3,7 @@ layout: page
 title: Version Control with Git
 ---
 
-You are very likely familiar with the notion of "version control". 
+You are likely familiar with the notion of "version control". 
 Microsoft and Apple consistently roll out new versions of their operating systems. Chances are you know exactly what version of operating system you have on your computer.
 Textbook publishers routinely publish new editions of books, and clearly identify it as a new version with an edition number. 
 Federal, state and local governments in the United States pass and amend laws, which have legislative histories appended to them to indicate when and how they have changed. 
