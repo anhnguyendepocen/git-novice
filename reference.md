@@ -3,6 +3,14 @@ layout: page
 title: Version Control with Git
 subtitle: Reference
 ---
+
+## Sites of interest
+
+*	[I broke git while trying to...](http://ibrokegit.com/)
+*	[Most common git screwups/questions and solutions](http://41j.com/blog/2015/02/common-git-screwupsquestions-solutions/)
+*	[nano basics](https://wiki.gentoo.org/wiki/Nano/Basics_Guide)
+
+
 ## [Setting Up Git](01-setup.html)
 
 *   Use `git config` to configure
@@ -46,22 +54,6 @@ subtitle: Reference
 *   The version control system does not allow people to blindly overwrite each other's changes.
     Instead, it highlights conflicts so that they can be resolved.
 
-## [Open Science](08-open.html)
-
-*   Open scientific work is more useful and more highly cited than closed.
-*   People who incorporate GPL'd software into theirs must make theirs open;
-    most other open licenses do not require this.
-*   The Creative Commons family of licenses allow people to mix and match
-    requirements and restrictions on attribution,
-    creation of derivative works,
-    further sharing,
-    and commercialization.
-*   People who are not lawyers should not try to write licenses from scratch.
-*   Projects can be hosted on university servers,
-    on personal domains,
-    or on public forges.
-*   Rules regarding intellectual property and storage of sensitive information apply
-    no matter where code and data are hosted.
 
 ## Glossary
 
