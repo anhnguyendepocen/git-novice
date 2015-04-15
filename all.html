@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="pandoc">
+    <title>Software Carpentry: Version Control with Git</title>
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" type="text/css" href="css/bootstrap/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="css/swc.css" />
+    <link rel="alternate" type="application/rss+xml" title="Software Carpentry Blog" href="http://software-carpentry.org/feed.xml"/>
+    <meta charset="UTF-8" />
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body class="lesson">
+    <div class="container">
+      <div class="banner">
+        <a href="http://software-carpentry.org" title="Software Carpentry">
+          <img alt="Software Carpentry banner" src="img/software-carpentry-banner.png" />
+        </a>
+      </div>
+      <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+          <h1 class="title">Version Control with Git</h1>
+          <h2 class="subtitle">All sections</h2>
+<div id="setting-up-git-learning-objectives" class="objectives">
+<h2>Setting Up Git: Learning Objectives</h2>
+<ul>
+<li>Explain which initialization and configuration steps are required once per machine, and which are required once per repository.</li>
+</ul>
+</div>
+<p>We'll start by exploring how version control can be used to keep track of what one person did and when.</p>
+<p>The first time we use Git on a new machine, we need to configure a few things. Here's how Thomas Jefferson would set up his new laptop:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> config --global user.name <span class="st">&quot;Tom Jefferson&quot;</span>
+$ <span class="kw">git</span> config --global user.email <span class="st">&quot;tj7z@virginia.edu&quot;</span>
+$ <span class="kw">git</span> config --global color.ui <span class="st">&quot;auto&quot;</span></code></pre>
+<p>(Please use your own name and email address instead of Tom's.)</p>
+<p>He also has to set his favorite text editor, following this table:</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Editor</th>
+<th align="left">Configuration command</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">nano</td>
+<td align="left"><code>$ git config --global core.editor &quot;nano -w&quot;</code></td>
+</tr>
+<tr class="even">
+<td align="left">Text Wrangler</td>
+<td align="left"><code>$ git config --global core.editor &quot;edit -w&quot;</code></td>
+</tr>
+<tr class="odd">
+<td align="left">Sublime Text (Mac)</td>
+<td align="left"><code>$ git config --global core.editor &quot;subl -n -w&quot;</code></td>
+</tr>
+<tr class="even">
+<td align="left">Sublime Text (Win)</td>
+<td align="left"><code>$ git config --global core.editor &quot;'c:/program files/sublime text 2/sublime_text.exe' -w&quot;</code></td>
+</tr>
+<tr class="odd">
+<td align="left">Notepad++ (Win)</td>
+<td align="left"><code>$ git config --global core.editor &quot;'c:/program files (x86)/Notepad++/notepad++.exe' -multiInst -notabbar -nosession -noPlugin&quot;</code></td>
+</tr>
+<tr class="even">
+<td align="left">Kate (Linux)</td>
+<td align="left"><code>$ git config --global core.editor &quot;kate&quot;</code></td>
+</tr>
+<tr class="odd">
+<td align="left">Gedit (Linux)</td>
+<td align="left"><code>$ git config --global core.editor &quot;gedit -s&quot;</code></td>
+</tr>
+</tbody>
+</table>
+<p>Git commands are written <code>git verb</code>, where <code>verb</code> is what we actually want it to do. In this case, we're telling Git:</p>
+<ul>
+<li>our name and email address,</li>
+<li>to colorize output,</li>
+<li>what our favorite text editor is, and</li>
+<li>that we want to use these settings globally (i.e., for every project),</li>
+</ul>
+<p>The four commands above only need to be run once: the flag <code>--global</code> tells Git to use the settings for every project on this machine.</p>
+<p>You can check your settings at any time:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> config --list</code></pre>
+<div id="proxy" class="callout">
+<h2>Proxy</h2>
+<p>In some networks you need to use a proxy. If this is the case you may also need to tell Git about the proxy:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> config --global http.proxy proxy-url
+$ <span class="kw">git</span> config --global https.proxy proxy-url</code></pre>
+<p>To disable the proxy, use</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> config --global --unset http.proxy
+$ <span class="kw">git</span> config --global --unset https.proxy</code></pre>
+</div>
+<div id="creating-a-repository-learning-objectives" class="objectives">
+<h2>Creating a Repository: Learning Objectives</h2>
+<ul>
+<li>Explain how to create a Git repository locally.</li>
+</ul>
+</div>
+<p>Once Git is configured, we can start using it. Let's create a directory for our work. In this lesson we'll write a Python program to calculate BMI (Body Mass Index), so let's call it &quot;bmi&quot;:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">mkdir</span> bmi
+$ <span class="kw">cd</span> bmi</code></pre>
+<p>and tell Git to make it a <a href="reference.html#repository">repository</a>—a place where Git can store old versions of our files:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> init</code></pre>
+<p>If we use <code>ls</code> to show the directory's contents, it appears that nothing has changed:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">ls</span></code></pre>
+<p>But if we add the <code>-a</code> flag to show everything, we can see that Git has created a hidden directory called <code>.git</code>:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">ls</span> -a</code></pre>
+<pre class="output"><code>.   ..  .git</code></pre>
+<p>Git stores information about the project in this special sub-directory. If we ever delete it, we will lose the project's history.</p>
+<p>We can check that everything is set up correctly by asking Git to tell us the status of our project:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> status</code></pre>
+<pre class="output"><code># On branch master
+#
+# Initial commit
+#
+nothing to commit (create/copy files and use &quot;git add&quot; to track)</code></pre>
+<p>It should be noted that you can create a git repository in an existing directory. Simply <code>cd</code> into it and issue the <code>git init</code> command.</p>
+<div id="tracking-changes-learning-objectives" class="objectives">
+<h2>Tracking Changes: Learning Objectives</h2>
+<ul>
+<li>Go through the modify-add-commit cycle for single and multiple files.</li>
+<li>Explain where information is stored at each stage.</li>
+</ul>
+</div>
+<p>Let's create a Python script called <code>bmi.py</code> that calculates a persons BMI (<a href="http://www.nhlbi.nih.gov/health/educational/lose_wt/BMI/bmicalc.htm">Body Mass Index</a>) given his or her weight in pounds and height in inches. BMI is a measure of body fat based on height and weight that applies to adult men and women. (We'll use <code>nano</code> to edit the file; you can use whatever editor you like. In particular, this does not have to be the core.editor you set globally earlier.)</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">nano</span> bmi.py</code></pre>
+<p>Type the code below into the <code>bmi.py</code> file:</p>
+<pre class="sourceCode python"><code class="sourceCode python">w = <span class="dt">raw_input</span>(<span class="st">&quot;enter weight: &quot;</span>)
+h = <span class="dt">raw_input</span>(<span class="st">&quot;enter height: &quot;</span>)
+bmi = (<span class="dt">float</span>(w) / <span class="dt">float</span>(h)**<span class="dv">2</span>) * <span class="dv">703</span>
+<span class="dt">print</span> bmi </code></pre>
+<p><code>bmi.py</code> now contains four lines:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">ls</span></code></pre>
+<pre class="output"><code>bmi.py</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cat</span> bmi.py</code></pre>
+<pre class="output"><code>w = raw_input(&quot;enter weight: &quot;)
+h = raw_input(&quot;enter height: &quot;)
+bmi = (float(w) / float(h)**2) * 703
+print bmi </code></pre>
+<p>Let's test our program:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">python</span> bmi.py</code></pre>
+<pre class="output"><code>enter weight in lbs.: 215
+enter height in inches: 69
+31.7464818315</code></pre>
+<p>It appears to be working (<em>as long as we enter numbers</em>).</p>
+<p>If we check the status of our project again, Git tells us that it's noticed the new file:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> status</code></pre>
+<pre class="output"><code># On branch master
+#
+# Initial commit
+#
+# Untracked files:
+#   (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)
+#
+#   bmi.py
+nothing added to commit but untracked files present (use &quot;git add&quot; to track)</code></pre>
+<p>The &quot;untracked files&quot; message means that there's a file in the directory that Git isn't keeping track of. We can tell Git to track a file using <code>git add</code>:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> add bmi.py</code></pre>
+<p>and then check that the right thing happened:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> status</code></pre>
+<pre class="output"><code># On branch master
+#
+# Initial commit
+#
+# Changes to be committed:
+#   (use &quot;git rm --cached &lt;file&gt;...&quot; to unstage)
+#
+#   new file:   bmi.py
+#</code></pre>
+<p>Git now knows that it's supposed to keep track of <code>bmi.py</code>, but it hasn't recorded these changes as a commit yet. To get it to do that, we need to run one more command:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> commit -m <span class="st">&quot;first version of bmi program&quot;</span></code></pre>
+<pre class="output"><code>[master (root-commit) f22b25e] first version of bmi program
+ 1 file changed, 4 insertions(+)
+ create mode 100644 bmi.py</code></pre>
+<p>When we run <code>git commit</code>, Git takes everything we have told it to save by using <code>git add</code> and stores a copy permanently inside the special <code>.git</code> directory. This permanent copy is called a <a href="reference.html#revision">revision</a> and its short identifier is <code>f22b25e</code>. (Your revision may have another identifier.)</p>
+<p>We use the <code>-m</code> flag (for &quot;message&quot;) to record a comment that will help us remember later on what we did and why. If we just run <code>git commit</code> without the <code>-m</code> option, Git will launch <code>nano</code> (or whatever other editor we configured at the start) so that we can write a longer message.</p>
+<p>If we run <code>git status</code> now:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> status</code></pre>
+<pre class="output"><code># On branch master
+nothing to commit, working directory clean</code></pre>
+<p>it tells us everything is up to date. If we want to know what we've done recently, we can ask Git to show us the project's history using <code>git log</code>:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> log</code></pre>
+<pre class="output"><code>commit f22b25e3233b4645dabd0d81e651fe074bd8e73b
+Author: Tom Jefferson &lt;tj7z@virginia.edu&gt;
+Date:   Thu Aug 22 09:51:46 2014 -0400
+
+    first version of bmi program</code></pre>
+<p><code>git log</code> lists all revisions made to a repository in reverse chronological order. The listing for each revision includes the revision's full identifier (which starts with the same characters as the short identifier printed by the <code>git commit</code> command earlier), the revision's author, when it was created, and the log message Git was given when the revision was created.</p>
+<div id="where-are-my-changes" class="callout">
+<h2>Where Are My Changes?</h2>
+<p>If we run <code>ls</code> at this point, we will still see just one file called <code>bmi.py</code>. That's because Git saves information about files' history in the special <code>.git</code> directory mentioned earlier so that our filesystem doesn't become cluttered (and so that we can't accidentally edit or delete an old version).</p>
+</div>
+<p>Now suppose Tom updates the program to indicate that weight must be entered in pounds and height in inches. (Again, we'll edit with <code>nano</code> and then <code>cat</code> the file to show its contents; you may use a different editor, and don't need to <code>cat</code>.)</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">nano</span> bmi.py
+$ <span class="kw">cat</span> bmi.py</code></pre>
+<pre class="output"><code>w = raw_input(&quot;enter weight in lbs.: &quot;)
+h = raw_input(&quot;enter height in inches: &quot;)
+bmi = (float(w) / float(h)**2) * 703
+print bmi</code></pre>
+<p>When we run <code>git status</code> now, it tells us that a file it already knows about has been modified:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> status</code></pre>
+<pre class="output"><code># On branch master
+# Changes not staged for commit:
+#   (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
+#   (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)
+#
+#   modified:   bmi.py
+#
+no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)</code></pre>
+<p>The last line is the key phrase: &quot;no changes added to commit&quot;. We have changed this file, but we haven't told Git we will want to save those changes (which we do with <code>git add</code>) much less actually saved them (which we do with <code>git commit</code>). So let's do that now. It is good practice to always review our changes before saving them. We do this using <code>git diff</code>. This shows us the differences between the current state of the file and the most recently saved version:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> diff</code></pre>
+<pre class="output"><code>diff --git a/bmi.py b/bmi.py
+index 5009833..6fcaa25 100644
+--- a/bmi.py
++++ b/bmi.py
+@@ -1,4 +1,4 @@
+-w = raw_input(&quot;enter weight: &quot;)
+-h = raw_input(&quot;enter height: &quot;)
++w = raw_input(&quot;enter weight in lbs.: &quot;)
++h = raw_input(&quot;enter height in inches: &quot;)
+ bmi =(float(w)/float(h)**2)*703
+ print bmi</code></pre>
+<p>The output is cryptic because it is actually a series of commands for tools like editors and <code>patch</code> telling them how to reconstruct one file given the other. If we break it down into pieces:</p>
+<ol style="list-style-type: decimal">
+<li>The first line tells us that Git is producing output similar to the Unix <code>diff</code> command comparing the old and new versions of the file.</li>
+<li>The second line tells exactly which revisions of the file Git is comparing; <code>5009833</code> and <code>6fcaa25</code> are unique computer-generated labels for those revisions.</li>
+<li>The third and fourth lines once again show the name of the file being changed.</li>
+<li>The remaining lines are the most interesting, they show us the actual differences and the lines on which they occur. In particular, the <code>+</code> markers in the first column show where we are adding lines.</li>
+</ol>
+<p>After reviewing our change, it's time to commit it:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> commit -m <span class="st">&quot;Add weight and height units&quot;</span></code></pre>
+<pre class="output"><code># On branch master
+# Changes not staged for commit:
+#   (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
+#   (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)
+#
+#   modified:   bmi.py
+#
+no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)</code></pre>
+<p>Whoops: Git won't commit because we didn't use <code>git add</code> first. Let's fix that:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> add bmi.py
+$ <span class="kw">git</span> commit -m <span class="st">&quot;Add weight and height units&quot;</span></code></pre>
+<pre class="output"><code>[master 34961b1] Add weight and height units
+ 1 file changed, 2 insertions(+), 2 deletions(-)</code></pre>
+<p>Git insists that we add files to the set we want to commit before actually committing anything because we may not want to commit everything at once. For example, suppose we're adding a few citations to our supervisor's work to our thesis. We might want to commit those additions, and the corresponding addition to the bibliography, but <em>not</em> commit the work we're doing on the conclusion (which we haven't finished yet).</p>
+<p>To allow for this, Git has a special staging area where it keeps track of things that have been added to the current <a href="reference.html#change-set">change set</a> but not yet committed. <code>git add</code> puts things in this area, and <code>git commit</code> then copies them to long-term storage (as a commit):</p>
+<div class="figure">
+<img src="fig/git-staging-area.svg" alt="The Git Staging Area" />
+<p class="caption">The Git Staging Area</p>
+</div>
+<p>Let's watch as our changes to a file move from our editor to the staging area and into long-term storage. First, we'll update our program to round the BMI to one decimal place:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">nano</span> bmi.py
+$ <span class="kw">cat</span> bmi.py</code></pre>
+<pre class="output"><code>w = raw_input(&quot;enter weight in lbs.: &quot;)
+h = raw_input(&quot;enter height in inches: &quot;)
+bmi = (float(w) / float(h)**2) * 703
+print round(bmi,1)</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> diff</code></pre>
+<pre class="output"><code>diff --git a/bmi.py b/bmi.py
+index 6fcaa25..c480208 100644
+--- a/bmi.py
++++ b/bmi.py
+@@ -1,4 +1,4 @@
+ w = raw_input(&quot;enter weight in lbs.: &quot;)
+ h = raw_input(&quot;enter height in inches: &quot;)
+ bmi =(float(w)/float(h)**2)*703
+-print bmi
++print round(bmi,1)</code></pre>
+<p>So far, so good: we've changed the last line the program. Now let's put that change in the staging area and see what <code>git diff</code> reports:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> add bmi.py
+$ <span class="kw">git</span> diff</code></pre>
+<p>There is no output: as far as Git can tell, there's no difference between what it's been asked to save permanently and what's currently in the directory. However, if we do this:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> diff --staged</code></pre>
+<pre class="output"><code>diff --git a/bmi.py b/bmi.py
+index 6fcaa25..c480208 100644
+--- a/bmi.py
++++ b/bmi.py
+@@ -1,4 +1,4 @@
+ w = raw_input(&quot;enter weight in lbs.: &quot;)
+ h = raw_input(&quot;enter height in inches: &quot;)
+ bmi =(float(w)/float(h)**2)*703
+-print bmi
++print round(bmi,1)</code></pre>
+<p>it shows us the difference between the last committed change and what's in the staging area. Let's save our changes:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> commit -m <span class="st">&quot;round bmi to one decimal place&quot;</span></code></pre>
+<pre class="output"><code>[master 005937f] round bmi to one decimal place
+ 1 file changed, 1 insertion(+), 1 deletion(-)</code></pre>
+<p>check our status:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> status</code></pre>
+<pre class="output"><code># On branch master
+nothing to commit, working directory clean</code></pre>
+<p>and look at the history of what we've done so far:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> log</code></pre>
+<pre class="output"><code>commit 005937fbe2a98fb83f0ade869025dc2636b4dad5
+Author: Tom Jefferson &lt;tj7x@virginia.edu&gt;
+Date:   Thu Aug 22 10:14:07 2014 -0400
+
+    round bmi to one decimal place
+
+commit 34961b159c27df3b475cfe4415d94a6d1fcd064d
+Author: Tom Jefferson &lt;tj7x@virginia.edu&gt;
+Date:   Thu Aug 22 10:07:21 2014 -0400
+
+    add weight and height units
+
+commit f22b25e3233b4645dabd0d81e651fe074bd8e73b
+Author: Tom Jefferson &lt;tj7x@virginia.edu&gt;
+Date:   Thu Aug 22 09:51:46 2014 -0400
+
+    first version of bmi program</code></pre>
+<p>To recap, when we want to add changes to our repository, we first need to add the changed files to the staging area (<code>git add</code>) and then commit the staged changes to the repository (<code>git commit</code>):</p>
+<div class="figure">
+<img src="fig/git-committing.svg" alt="The Git Commit Workflow" />
+<p class="caption">The Git Commit Workflow</p>
+</div>
+<div id="committing-changes-to-git" class="challenge">
+<h2>Committing Changes to Git</h2>
+<p>Which command(s) below would save changes of <code>myfile.txt</code> to my local Git repository?</p>
+<ol style="list-style-type: decimal">
+<li><pre><code>$ git commit -m &quot;my recent changes&quot;</code></pre></li>
+<li><pre><code>$ git init myfile.txt
+$ git commit -m &quot;my recent changes&quot;</code></pre></li>
+<li><pre><code>$ git add myfile.txt
+$ git commit -m &quot;my recent changes&quot;</code></pre></li>
+<li><pre><code>$ git commit -m myfile.txt &quot;my recent changes&quot;</code></pre></li>
+</ol>
+</div>
+<div id="bio-repository" class="challenge">
+<h2><code>bio</code> Repository</h2>
+<p>Create a new Git repository on your computer called <code>bio</code>. Write a three-line biography for yourself in a file called <code>me.txt</code>, commit your changes, then modify one line and add a fourth and display the differences between its updated state and its original state.</p>
+</div>
+<div id="exploring-history-learning-objectives" class="objectives">
+<h2>Exploring History: Learning Objectives</h2>
+<ul>
+<li>Identify and use Git revision numbers.</li>
+<li>Compare files with old versions of themselves.</li>
+<li>Restore old versions of files.</li>
+</ul>
+</div>
+<p>If we want to see what we changed when, we use <code>git diff</code> again, but refer to old versions using the notation <code>HEAD~1</code>, <code>HEAD~2</code>, and so on:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> diff HEAD~1 bmi.py</code></pre>
+<pre class="output"><code>diff --git a/bmi.py b/bmi.py
+index 6fcaa25..c480208 100644
+--- a/bmi.py
++++ b/bmi.py
+@@ -1,4 +1,4 @@
+ w = raw_input(&quot;enter weight in lbs.: &quot;)
+ h = raw_input(&quot;enter height in inches: &quot;)
+ bmi =(float(w)/float(h)**2)*703
+-print bmi
++print round(bmi,1)</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> diff HEAD~2 bmi.py</code></pre>
+<pre class="output"><code>diff --git a/bmi.py b/bmi.py
+index 5009833..c480208 100644
+--- a/bmi.py
++++ b/bmi.py
+@@ -1,4 +1,4 @@
+-w = raw_input(&quot;enter weight: &quot;)
+-h = raw_input(&quot;enter height: &quot;)
++w = raw_input(&quot;enter weight in lbs.: &quot;)
++h = raw_input(&quot;enter height in inches: &quot;)
+ bmi =(float(w)/float(h)**2)*703
+-print bmi
++print round(bmi,1)</code></pre>
+<p>In this way, we build up a chain of revisions. The most recent end of the chain is referred to as <code>HEAD</code>; we can refer to previous revisions using the <code>~</code> notation, so <code>HEAD~1</code> (pronounced &quot;head minus one&quot;) means &quot;the previous revision&quot;, while <code>HEAD~14</code> goes back 14 revisions from where we are now.</p>
+<p>We can also refer to revisions using those long strings of digits and letters that <code>git log</code> displays. These are unique IDs for the changes, and &quot;unique&quot; really does mean unique: every change to any set of files on any machine has a unique 40-character identifier. Our first commit was given the ID d8f0892f62d80b2f2aa88dc0ad62e6989a60d282, so let's try this:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> diff d8f0892f62d80b2f2aa88dc0ad62e6989a60d282 bmi.py</code></pre>
+<pre class="output"><code>diff --git a/bmi.py b/bmi.py
+index 5009833..c480208 100644
+--- a/bmi.py
++++ b/bmi.py
+@@ -1,4 +1,4 @@
+-w = raw_input(&quot;enter weight: &quot;)
+-h = raw_input(&quot;enter height: &quot;)
++w = raw_input(&quot;enter weight in lbs.: &quot;)
++h = raw_input(&quot;enter height in inches: &quot;)
+ bmi =(float(w)/float(h)**2)*703
+-print bmi
++print round(bmi,1)</code></pre>
+<p>That's the right answer, but typing random 40-character strings is annoying, so Git lets us use just the first few:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> diff d8f089 bmi.py</code></pre>
+<pre class="output"><code>diff --git a/bmi.py b/bmi.py
+index 5009833..c480208 100644
+--- a/bmi.py
++++ b/bmi.py
+@@ -1,4 +1,4 @@
+-w = raw_input(&quot;enter weight: &quot;)
+-h = raw_input(&quot;enter height: &quot;)
++w = raw_input(&quot;enter weight in lbs.: &quot;)
++h = raw_input(&quot;enter height in inches: &quot;)
+ bmi =(float(w)/float(h)**2)*703
+-print bmi
++print round(bmi,1)</code></pre>
+<p>All right: we can save changes to files and see what we've changed---how can we restore older versions of things? Let's suppose we accidentally overwrite our file:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">nano</span> bmi.py
+$ <span class="kw">cat</span> bmi.py</code></pre>
+<pre class="output"><code>print &quot;hello world&quot;</code></pre>
+<p><code>git status</code> now tells us that the file has been changed, but those changes haven't been staged:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> status</code></pre>
+<pre class="output"><code># On branch master
+# Changes not staged for commit:
+#   (use &quot;git add &lt;file&gt;...&quot; to update what will be committed)
+#   (use &quot;git checkout -- &lt;file&gt;...&quot; to discard changes in working directory)
+#
+#   modified:   bmi.py
+#
+no changes added to commit (use &quot;git add&quot; and/or &quot;git commit -a&quot;)</code></pre>
+<p>We can put things back the way they were by using <code>git checkout</code> (NOTE: do NOT forget the file name!):</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> checkout HEAD bmi.py
+$ <span class="kw">cat</span> bmi.py</code></pre>
+<pre class="output"><code>w = raw_input(&quot;enter weight in lbs.: &quot;)
+h = raw_input(&quot;enter height in inches: &quot;)
+bmi =(float(w)/float(h)**2)*703
+print round(bmi,1)</code></pre>
+<p>As you might guess from its name, <code>git checkout</code> checks out (i.e., restores) an old version of a file. In this case, we're telling Git that we want to recover the version of the file recorded in <code>HEAD</code>, which is the last saved revision. If we want to go back even further, we can use a revision identifier instead:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> checkout d8f089 bmi.py</code></pre>
+<p>It's important to remember that we must use the revision number that identifies the state of the repository <em>before</em> the change we're trying to undo. A common mistake is to use the revision number of the commit in which we made the change we're trying to get rid of. In the example below, we want retrieve the state from before the most recent commit (<code>HEAD~1</code>), which is revision <code>f22b25e</code>:</p>
+<div class="figure">
+<img src="fig/git-checkout.svg" alt="Git Checkout" />
+<p class="caption">Git Checkout</p>
+</div>
+<p>The following diagram illustrates what the history of a file might look like (moving back from <code>HEAD</code>, the most recently committed version):</p>
+<div class="figure">
+<img src="fig/git-when-revisions-updated.svg" alt="When Git Updates Revision Numbers" />
+<p class="caption">When Git Updates Revision Numbers</p>
+</div>
+<div id="simplifying-the-common-case" class="callout">
+<h2>Simplifying the Common Case</h2>
+<p>If you read the output of <code>git status</code> carefully, you'll see that it includes this hint:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash"><span class="kw">(use</span> <span class="st">&quot;git checkout -- &lt;file&gt;...&quot;</span> to discard changes in working directory<span class="kw">)</span></code></pre>
+<p>As it says, <code>git checkout</code> without a version identifier restores files to the state saved in <code>HEAD</code>. The double dash <code>--</code> is needed to separate the names of the files being recovered from the command itself: without it, Git would try to use the name of the file as the revision identifier.</p>
+</div>
+<p>The fact that files can be reverted one by one tends to change the way people organize their work. If everything is in one large document, it's hard (but not impossible) to undo changes to the introduction without also undoing changes made later to the conclusion. If the introduction and conclusion are stored in separate files, on the other hand, moving backward and forward in time becomes much easier.</p>
+<div id="recovering-older-versions-of-a-file" class="challenge">
+<h2>Recovering Older Versions of a File</h2>
+<p>Jennifer has made changes to the Python script that she has been working on for weeks, and the modifications she made this morning &quot;broke&quot; the script and it no longer runs. She has spent ~ 1hr trying to fix it, with no luck...</p>
+<p>Luckily, she has been keeping track of her revisions using Git! Which commands below will let her recover the last committed version of her Python script called <code>data_cruncher.py</code>?</p>
+<ol style="list-style-type: decimal">
+<li><pre><code>$ git checkout HEAD</code></pre></li>
+<li><pre><code>$ git checkout HEAD data_cruncher.py</code></pre></li>
+<li><pre><code>$ git checkout HEAD~1 data_cruncher.py</code></pre></li>
+<li><pre><code>$ git checkout &lt;unique ID of last revision&gt; data_cruncher.py</code></pre></li>
+<li>Both 2 &amp; 4</li>
+</ol>
+</div>
+<div id="ignoring-things-learning-objectives" class="objectives">
+<h2>Ignoring Things: Learning Objectives</h2>
+<ul>
+<li>Configure Git to ignore specific files, and explain why it is sometimes useful to do so.</li>
+</ul>
+</div>
+<p>What if we have files that we do not want Git to track for us, like backup files created by our editor or intermediate files created during data analysis. Let's create a few dummy files:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">mkdir</span> results
+$ <span class="kw">touch</span> a.dat b.dat c.dat results/a.out results/b.out</code></pre>
+<p>and see what Git says:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> status</code></pre>
+<pre class="output"><code># On branch master
+# Untracked files:
+#   (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)
+#
+#   a.dat
+#   b.dat
+#   c.dat
+#   results/
+nothing added to commit but untracked files present (use &quot;git add&quot; to track)</code></pre>
+<p>Putting these files under version control would be a waste of disk space. What's worse, having them all listed could distract us from changes that actually matter, so let's tell Git to ignore them.</p>
+<p>We do this by creating a file in the root directory of our project called <code>.gitignore</code>.</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">nano</span> .gitignore
+$ <span class="kw">cat</span> .gitignore</code></pre>
+<pre class="output"><code>*.dat
+results/</code></pre>
+<p>These patterns tell Git to ignore any file whose name ends in <code>.dat</code> and everything in the <code>results</code> directory. (If any of these files were already being tracked, Git would continue to track them.)</p>
+<p>Once we have created this file, the output of <code>git status</code> is much cleaner:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> status</code></pre>
+<pre class="output"><code># On branch master
+# Untracked files:
+#   (use &quot;git add &lt;file&gt;...&quot; to include in what will be committed)
+#
+#   .gitignore
+nothing added to commit but untracked files present (use &quot;git add&quot; to track)</code></pre>
+<p>The only thing Git notices now is the newly-created <code>.gitignore</code> file. You might think we wouldn't want to track it, but everyone we're sharing our repository with will probably want to ignore the same things that we're ignoring. Let's add and commit <code>.gitignore</code>:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> add .gitignore
+$ <span class="kw">git</span> commit -m <span class="st">&quot;Add the ignore file&quot;</span>
+$ <span class="kw">git</span> status</code></pre>
+<pre class="output"><code># On branch master
+nothing to commit, working directory clean</code></pre>
+<p>As a bonus, using <code>.gitignore</code> helps us avoid accidentally adding files to the repository that we don't want.</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> add a.dat</code></pre>
+<pre class="output"><code>The following paths are ignored by one of your .gitignore files:
+a.dat
+Use -f if you really want to add them.
+fatal: no files added</code></pre>
+<p>If we really want to override our ignore settings, we can use <code>git add -f</code> to force Git to add something. We can also always see the status of ignored files if we want:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> status --ignored</code></pre>
+<pre class="output"><code># On branch master
+# Ignored files:
+#  (use &quot;git add -f &lt;file&gt;...&quot; to include in what will be committed)
+#
+#        a.dat
+#        b.dat
+#        c.dat
+#        results/
+
+nothing to commit, working directory clean</code></pre>
+<div id="collaborating-learning-objectives" class="objectives">
+<h2>Collaborating: Learning Objectives</h2>
+<ul>
+<li>Explain what remote repositories are and why they are useful.</li>
+<li>Explain what happens when a remote repository is cloned.</li>
+<li>Explain what happens when changes are pushed to or pulled from a remote repository.</li>
+</ul>
+</div>
+<p>Version control really comes into its own when we begin to collaborate with other people. We already have most of the machinery we need to do this; the only thing missing is to copy changes from one repository to another.</p>
+<p>Systems like Git allow us to move work between any two repositories. In practice, though, it's easiest to use one copy as a central hub, and to keep it on the web rather than on someone's laptop. Most programmers use hosting services like <a href="http://github.com">GitHub</a> or <a href="http://bitbucket.org">BitBucket</a> to hold those master copies.</p>
+<p>Let's start by sharing the changes we've made to our current project with the world. Log in to GitHub, then click on the icon in the top right corner to create a new repository called <code>bmi</code>.</p>
+<p>Name your repository &quot;bmi&quot; and then click &quot;Create Repository&quot;.</p>
+<p>As soon as the repository is created, GitHub displays a page with a URL and some information on how to configure your local repository.</p>
+<p>This effectively does the following on GitHub's servers:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">mkdir</span> bmi
+$ <span class="kw">cd</span> bmi
+$ <span class="kw">git</span> init</code></pre>
+<p>Our local repository still contains our earlier work on <code>bmi.py</code>, but the remote repository on GitHub doesn't contain any files yet.</p>
+<p>The next step is to connect the two repositories. We do this by making the GitHub repository a <a href="reference.html#remote">remote</a> for the local repository. The home page of the repository on GitHub includes the string we need to identify it:</p>
+<div class="figure">
+<img src="fig/github-find-repo-string.png" alt="Where to Find Repository URL on GitHub" />
+<p class="caption">Where to Find Repository URL on GitHub</p>
+</div>
+<p>Click on the 'HTTPS' link to change the <a href="reference.html#protocol">protocol</a> from SSH to HTTPS.</p>
+<div id="https-vs-ssh" class="callout">
+<h2>HTTPS vs SSH</h2>
+<p>We use HTTPS here because it does not require additional configuration. After the workshop you may want to set up SSH access, which is a bit more secure, by following one of the great tutorials from <a href="https://help.github.com/articles/generating-ssh-keys">GitHub</a>, <a href="https://confluence.atlassian.com/display/BITBUCKET/Set+up+SSH+for+Git">Atlassian/BitBucket</a> and <a href="https://about.gitlab.com/2014/03/04/add-ssh-key-screencast/">GitLab</a> (this one has a screencast).</p>
+</div>
+<div class="figure">
+<img src="fig/github-change-repo-string.png" alt="Changing the Repository URL on GitHub" />
+<p class="caption">Changing the Repository URL on GitHub</p>
+</div>
+<p>Copy that URL from the browser, go into the local <code>bmi</code> repository, and run this command:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> remote add origin https://github.com/tomjeff/bmi.git</code></pre>
+<p>Make sure to use the URL for your repository rather than Tom's: the only difference should be your username instead of <code>tomjeff</code>.</p>
+<p>We can check that the command has worked by running <code>git remote -v</code>:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> remote -v</code></pre>
+<pre class="output"><code>origin   https://github.com/tomjeff/bmi.git (push)
+origin   https://github.com/tomjeff/bmi.git (fetch)</code></pre>
+<p>The name <code>origin</code> is a local nickname for your remote repository: we could use something else if we wanted to, but <code>origin</code> is by far the most common choice.</p>
+<p>Once the nickname <code>origin</code> is set up, this command will push the changes from our local repository to the repository on GitHub:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> push origin master</code></pre>
+<pre class="output"><code>Counting objects: 9, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (9/9), 821 bytes, done.
+Total 9 (delta 2), reused 0 (delta 0)
+To https://github.com/tomjeff/bmi
+ * [new branch]      master -&gt; master
+Branch master set up to track remote branch master from origin.</code></pre>
+<div id="proxy-1" class="callout">
+<h2>Proxy</h2>
+<p>If the network you are connected to uses a proxy there is an chance that your last command failed with &quot;Could not resolve hostname&quot; as the error message. To solve this issue you need to tell Git about the proxy:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> config --global http.proxy http://user:password@proxy.url
+$ <span class="kw">git</span> config --global https.proxy http://user:password@proxy.url</code></pre>
+<p>When you connect to another network that doesn't use a proxy you will need to tell Git to disable the proxy using</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> config --global --unset http.proxy
+$ <span class="kw">git</span> config --global --unset https.proxy</code></pre>
+</div>
+<div id="password-managers" class="callout">
+<h2>Password Managers</h2>
+<p>If your operating system has a password manager configured, <code>git push</code> will try to use it when it needs your username and password. If you want to type your username and password at the terminal instead of using a password manager, type</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">unset</span> <span class="ot">SSH_ASKPASS</span></code></pre>
+<p>You may want to add this command at the end of your <code>~/.bashrc</code> to make it the default behavior.</p>
+</div>
+<div id="the--u-flag" class="callout">
+<h2>The '-u' Flag</h2>
+<p>You may see a <code>-u</code> option used with <code>git push</code> in some documentation. It is related to concepts we cover in our intermediate lesson, and can safely be ignored for now.</p>
+</div>
+<p>We can pull changes from the remote repository to the local one as well:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> pull origin master</code></pre>
+<pre class="output"><code>From https://github.com/tomjeff/bmi
+ * branch            master     -&gt; FETCH_HEAD
+Already up-to-date.</code></pre>
+<p>Pulling has no effect in this case because the two repositories are already synchronized. If someone else had pushed some changes to the repository on GitHub, though, this command would download them to our local repository.</p>
+<p>For the next step, get into pairs. Pick one of your repositories on GitHub to use for collaboration.</p>
+<div id="practicing-by-yourself" class="callout">
+<h2>Practicing by yourself</h2>
+<p>If you're working through this lesson on your own, you can carry on by opening a second terminal window, and switching to another directory (e.g. <code>/tmp</code>). This window will represent your partner, working on another computer. You won't need to give anyone access on GitHub, because both 'partners' are you.</p>
+</div>
+<p>The partner whose repository is being used needs to give the other person access. On GitHub, click the settings button on the right, then select Collaborators, and enter your partner's username.</p>
+<div class="figure">
+<img src="fig/github-add-collaborators.png" alt="Adding collaborators on GitHub" />
+<p class="caption">Adding collaborators on GitHub</p>
+</div>
+<p>The other partner should <code>cd</code> to another directory (so <code>ls</code> doesn't show a <code>bmi</code> folder), and then make a copy of this repository on their own computer:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> clone https://github.com/tomjeff/bmi.git</code></pre>
+<p>Replace 'tomjeff' with your partner's username (the one who owns the repository).</p>
+<p><code>git clone</code> creates a fresh local copy of a remote repository.</p>
+<div class="figure">
+<img src="fig/github-collaboration.svg" alt="After Creating Clone of Repository" />
+<p class="caption">After Creating Clone of Repository</p>
+</div>
+<p>The new collaborator can now make a change in their copy of the repository. For example, let's say she begins creating some documentation called help.txt:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cd</span> bmi
+$ <span class="kw">nano</span> help.txt
+$ <span class="kw">cat</span> help.txt</code></pre>
+<pre class="output"><code>BMI is calculated as (weight / height^2) * 703. </code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> add help.txt
+$ <span class="kw">git</span> commit -m <span class="st">&quot;first version of help file&quot;</span></code></pre>
+<pre class="output"><code> 1 file changed, 1 insertion(+)
+ create mode 100644 help.txt</code></pre>
+<p>then push the change to GitHub:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> push origin master</code></pre>
+<pre class="output"><code>Counting objects: 4, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 306 bytes, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To https://github.com/tomjeff/bmi.git
+   9272da5..29aba7c  master -&gt; master</code></pre>
+<p>Note that we didn't have to create a remote called <code>origin</code>: Git does this automatically, using that name, when we clone a repository. (This is why <code>origin</code> was a sensible choice earlier when we were setting up remotes by hand.)</p>
+<p>We can now download changes into the original repository on our machine:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> pull origin master</code></pre>
+<pre class="output"><code>remote: Counting objects: 4, done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 3 (delta 0), reused 3 (delta 0)
+Unpacking objects: 100% (3/3), done.
+From https://github.com/tomjeff/bmi
+ * branch            master     -&gt; FETCH_HEAD
+Updating 9272da5..29aba7c
+Fast-forward
+ help.txt | 1 +
+ 1 file changed, 1 insertion(+)
+ create mode 100644 help.txt</code></pre>
+<div id="conflicts-learning-objectives" class="objectives">
+<h2>Conflicts: Learning Objectives</h2>
+<ul>
+<li>Explain what conflicts are and when they can occur.</li>
+<li>Resolve conflicts resulting from a merge.</li>
+</ul>
+</div>
+<p>As soon as people can work in parallel, someone's going to step on someone else's toes. This will even happen with a single person: if we are working on a piece of software on both our laptop and a server in the lab, we could make different changes to each copy. Version control helps us manage these <a href="reference.html#conflicts">conflicts</a> by giving us tools to <a href="reference.html#resolve">resolve</a> overlapping changes.</p>
+<p>To see how we can resolve conflicts, we must first create one. The file <code>bmi.py</code> currently looks like this in both partners' copies of our <code>bmi</code> repository:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cat</span> bmi.py</code></pre>
+<pre class="output"><code>w = raw_input(&quot;enter weight in lbs.: &quot;)
+h = raw_input(&quot;enter height in inches: &quot;)
+bmi =(float(w)/float(h)**2)*703
+print round(bmi,1)</code></pre>
+<p>Let's change a line in one partner's copy only:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">nano</span> bmi.py
+$ <span class="kw">cat</span> bmi.py</code></pre>
+<pre class="output"><code>w = raw_input(&quot;enter weight in lbs.: &quot;)
+h = raw_input(&quot;enter height in inches: &quot;)
+bmi =(float(w)/float(h)**2)*703
+print &#39;Your BMI is %s&#39; % (round(bmi,1))</code></pre>
+<p>and then push the change to GitHub:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> add bmi.py
+$ <span class="kw">git</span> commit -m <span class="st">&quot;update output language&quot;</span></code></pre>
+<pre class="output"><code>[master 5ae9631] Adding a line in our home copy
+ 1 file changed, 1 insertion(+)</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> push origin master</code></pre>
+<pre class="output"><code>Counting objects: 5, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 352 bytes, done.
+Total 3 (delta 1), reused 0 (delta 0)
+To https://github.com/tomjeff/bmi
+   29aba7c..dabb4c8  master -&gt; master</code></pre>
+<p>Now let's have the other partner make a slightly different change to their copy <em>without</em> updating from GitHub:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">nano</span> bmi.py
+$ <span class="kw">cat</span> bmi.py</code></pre>
+<pre class="output"><code>w = raw_input(&quot;enter weight in lbs.: &quot;)
+h = raw_input(&quot;enter height in inches: &quot;)
+bmi =(float(w)/float(h)**2)*703
+print &#39;BMI: %s&#39; % (round(bmi,1))</code></pre>
+<p>We can commit the change locally:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> add bmi.py
+$ <span class="kw">git</span> commit -m <span class="st">&quot;add BMI label&quot;</span></code></pre>
+<pre class="output"><code>[master 07ebc69] Adding a line in my copy
+ 1 file changed, 1 insertion(+)</code></pre>
+<p>but Git won't let us push it to GitHub:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> push origin master</code></pre>
+<pre class="output"><code>To https://github.com/tomjeff/bmi.git
+ ! [rejected]        master -&gt; master (non-fast-forward)
+error: failed to push some refs to &#39;https://github.com/tomjeff/bmi.git&#39;
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first integrate the remote changes
+hint: (e.g., &#39;git pull ...&#39;) before pushing again.
+hint: See the &#39;Note about fast-forwards&#39; in &#39;git push --help&#39; for details.</code></pre>
+<p>Git detects that the changes made in one copy overlap with those made in the other and stops us from trampling on our previous work. What we have to do is pull the changes from GitHub, <a href="reference.html#merge">merge</a> them into the copy we're currently working in, and then push that. Let's start by pulling:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> pull origin master</code></pre>
+<pre class="output"><code>remote: Counting objects: 3, done.
+remote: Compressing objects: 100% (2/2), done.
+remote: Total 3 (delta 1), reused 3 (delta 1), pack-reused 0
+Unpacking objects: 100% (3/3), done.
+From https://github.com/tomjeff/bmi
+ * branch            master     -&gt; FETCH_HEAD
+   fd79f68..620cc4f  master     -&gt; origin/master
+Auto-merging bmi.py
+CONFLICT (content): Merge conflict in bmi.py
+Automatic merge failed; fix conflicts and then commit the result.</code></pre>
+<p><code>git pull</code> tells us there's a conflict, and marks that conflict in the affected file:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cat</span> bmi.py</code></pre>
+<pre class="output"><code>w = raw_input(&quot;enter weight in lbs.: &quot;)
+h = raw_input(&quot;enter height in inches: &quot;)
+bmi =(float(w)/float(h)**2)*703
+&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+print &#39;BMI: %s&#39; % (round(bmi,1))
+=======
+print &#39;Your BMI is %s&#39; % (round(bmi,1))
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; 620cc4fb444be59733bbea0a28451d5877ed053d</code></pre>
+<p>Our change---the one in <code>HEAD</code>---is preceded by <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code>. Git has then inserted <code>=======</code> as a separator between the conflicting changes and marked the end of the content downloaded from GitHub with <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code>. (The string of letters and digits after that marker identifies the revision we've just downloaded.)</p>
+<p>It is now up to us to edit this file to remove these markers and reconcile the changes. We can do anything we want: keep the change made in the local repository, keep the change made in the remote repository, write something new to replace both, or get rid of the change entirely. Let's replace both so that the file looks like this:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">nano</span> bmi.py</code></pre>
+<p>Note: In <code>nano</code>, Ctrl + K can be used to quickly <code>delete</code> a line in file, which can be useful for deleting lines such as <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code>.</p>
+<pre class="output"><code>w = raw_input(&quot;enter weight in lbs.: &quot;)
+h = raw_input(&quot;enter height in inches: &quot;)
+bmi =(float(w)/float(h)**2)*703
+print &#39;Body Mass Index (BMI): %s&#39; % (round(bmi,1))</code></pre>
+<p>To finish merging, we add <code>bmi.py</code> to the changes being made by the merge and then commit:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> add bmi.py
+$ <span class="kw">git</span> status</code></pre>
+<pre class="output"><code># On branch master
+# All conflicts fixed but you are still merging.
+#   (use &quot;git commit&quot; to conclude merge)
+#
+# Changes to be committed:
+#
+#   modified:   bmi.py
+#</code></pre>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> commit -m <span class="st">&quot;Merging changes from GitHub&quot;</span></code></pre>
+<pre class="output"><code>[master 2abf2b1] Merging changes from GitHub</code></pre>
+<p>Now we can push our changes to GitHub:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> push origin master</code></pre>
+<pre class="output"><code>Counting objects: 10, done.
+Delta compression using up to 4 threads.
+Compressing objects: 100% (6/6), done.
+Writing objects: 100% (6/6), 697 bytes, done.
+Total 6 (delta 2), reused 0 (delta 0)
+To https://github.com/tomjeff/bmi.git
+   dabb4c8..2abf2b1  master -&gt; master</code></pre>
+<p>Git keeps track of what we've merged with what, so we don't have to fix things by hand again when the collaborator who made the first change pulls again:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">git</span> pull origin master</code></pre>
+<pre class="output"><code>remote: Counting objects: 10, done.        
+remote: Compressing objects: 100% (4/4), done.        
+remote: Total 6 (delta 2), reused 6 (delta 2)        
+Unpacking objects: 100% (6/6), done.
+From https://github.com/tomjeff/bmi
+ * branch            master     -&gt; FETCH_HEAD
+Updating dabb4c8..2abf2b1
+Fast-forward
+ bmi.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)</code></pre>
+<p>we get the merged file:</p>
+<pre class="sourceCode bash"><code class="sourceCode bash">$ <span class="kw">cat</span> bmi.py</code></pre>
+<pre class="output"><code>w = raw_input(&quot;enter weight in lbs.: &quot;)
+h = raw_input(&quot;enter height in inches: &quot;)
+bmi =(float(w)/float(h)**2)*703
+print &#39;Body Mass Index (BMI): %s&#39; % (round(bmi,1))</code></pre>
+<p>We don't need to merge again because Git knows someone has already done that.</p>
+<p>Version control's ability to merge conflicting changes is another reason users tend to divide their programs and papers into multiple files instead of storing everything in one large file. There's another benefit too: whenever there are repeated conflicts in a particular file, the version control system is essentially trying to tell its users that they ought to clarify who's responsible for what, or find a way to divide the work up differently.</p>
+<p><a href="index.html">Home</a></p>
+        </div>
+      </div>
+      <div class="footer">
+        <a class="label swc-blue-bg" href="http://software-carpentry.org">Software Carpentry</a>
+        <a class="label swc-blue-bg" href="https://github.com/swcarpentry/git-novice">Source</a>
+        <a class="label swc-blue-bg" href="mailto:admin@software-carpentry.org">Contact</a>
+        <a class="label swc-blue-bg" href="LICENSE.html">License</a>
+      </div>
+    </div>
+    <!-- Javascript placed at the end of the document so the pages load faster -->
+    <script src="http://software-carpentry.org/v5/js/jquery-1.9.1.min.js"></script>
+    <script src="css/bootstrap/bootstrap-js/bootstrap.js"></script>
+  </body>
+</html>
